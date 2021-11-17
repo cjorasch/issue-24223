@@ -1,0 +1,12 @@
+{
+  "name": "issue-24223",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "stencil build",
+    "start": "stencil build --dev --watch --serve"
+  },
+  "dependencies": {
+    "@ionic/core": "6.0.0-rc.2",
+    "@stencil/core": "2.9.0"
+  }
+}
