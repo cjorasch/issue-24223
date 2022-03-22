@@ -1,8 +1,5 @@
-import { r as registerInstance, h, i as Host, j as getElement } from './index-68fca061.js';
+import { r as registerInstance, i as h, j as Host, k as getElement } from './index-22aea243.js';
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
 const navLink = (el, routerDirection, component, componentProps, routerAnimation) => {
   const nav = el.closest('ion-nav');
   if (nav) {

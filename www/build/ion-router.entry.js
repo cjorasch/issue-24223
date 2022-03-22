@@ -1,16 +1,10 @@
-import { r as registerInstance, k as createEvent, j as getElement } from './index-68fca061.js';
-import { c as componentOnReady, n as debounce } from './helpers-282dc853.js';
+import { r as registerInstance, f as createEvent, k as getElement } from './index-22aea243.js';
+import { c as componentOnReady, n as debounce } from './helpers-d3df6ac7.js';
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
 const ROUTER_INTENT_NONE = 'root';
 const ROUTER_INTENT_FORWARD = 'forward';
 const ROUTER_INTENT_BACK = 'back';
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
 // Join the non empty segments with "/".
 const generatePath = (segments) => {
   const path = segments
@@ -105,9 +99,6 @@ const parsePath = (path) => {
   return { segments, queryString };
 };
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
 const printRoutes = (routes) => {
   console.group(`[ion-core] ROUTES[${routes.length}]`);
   for (const chain of routes) {
@@ -128,9 +119,6 @@ const printRedirects = (redirects) => {
   console.groupEnd();
 };
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
 const writeNavState = async (root, chain, direction, index, changed = false, animation) => {
   try {
     // find next navigation outlet in the DOM
@@ -206,9 +194,6 @@ const searchNavNode = (root) => {
   return outlet !== null && outlet !== void 0 ? outlet : undefined;
 };
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
 // Returns whether the given redirect matches the given path segments.
 //
 // A redirect matches when the segments of the path and redirect.from are equal.
@@ -239,13 +224,54 @@ const findRouteRedirect = (path, redirects) => {
 };
 const matchesIDs = (ids, chain) => {
   const len = Math.min(ids.length, chain.length);
-  let i = 0;
-  for (; i < len; i++) {
-    if (ids[i].toLowerCase() !== chain[i].id) {
+  let score = 0;
+  for (let i = 0; i < len; i++) {
+    const routeId = ids[i];
+    const routeChain = chain[i];
+    // Skip results where the route id does not match the chain at the same index
+    if (routeId.id.toLowerCase() !== routeChain.id) {
       break;
     }
+    if (routeId.params) {
+      const routeIdParams = Object.keys(routeId.params);
+      /**
+       * Only compare routes with the chain that have the same number of parameters.
+       */
+      if (routeIdParams.length === routeChain.path.length) {
+        /**
+         * Maps the route's params into a path based on the path variable names,
+         * to compare against the route chain format.
+         *
+         * Before:
+         * ```ts
+         * {
+         *  params: {
+         *    s1: 'a',
+         *    s2: 'b'
+         *  }
+         * }
+         * ```
+         *
+         * After:
+         * ```ts
+         * [':s1',':s2']
+         * ```
+         */
+        const pathWithParams = routeIdParams.map(key => `:${key}`);
+        for (let j = 0; j < pathWithParams.length; j++) {
+          // Skip results where the path variable is not a match
+          if (pathWithParams[j].toLowerCase() !== routeChain.path[j]) {
+            break;
+          }
+          // Weight path matches for the same index higher.
+          score++;
+        }
+      }
+    }
+    // Weight id matches
+    score++;
   }
-  return i;
+  return score;
 };
 const matchesPath = (inputPath, chain) => {
   const segments = new RouterSegments(inputPath);
@@ -300,9 +326,8 @@ const mergeParams = (a, b) => {
 const routerIDsToChain = (ids, chains) => {
   let match = null;
   let maxMatches = 0;
-  const plainIDs = ids.map(i => i.id);
   for (const chain of chains) {
-    const score = matchesIDs(plainIDs, chain);
+    const score = matchesIDs(ids, chain);
     if (score > maxMatches) {
       match = chain;
       maxMatches = score;
@@ -360,9 +385,6 @@ class RouterSegments {
   }
 }
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
 const readProp = (el, prop) => {
   if (prop in el) {
     return el[prop];

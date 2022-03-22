@@ -1,9 +1,6 @@
-import { r as registerInstance, n as forceUpdate, h, i as Host } from './index-68fca061.js';
-import { g as getIonMode } from './ionic-global-686539a0.js';
+import { r as registerInstance, m as forceUpdate, i as h, j as Host } from './index-22aea243.js';
+import { g as getIonMode } from './ionic-global-2f4a12b1.js';
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
 const SIZE_TO_MEDIA = {
   'xs': '(min-width: 0px)',
   'sm': '(min-width: 576px)',

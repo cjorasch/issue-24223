@@ -1,6 +1,5 @@
-import { r as registerInstance, k as createEvent, m as writeTask, l as readTask, h, i as Host, j as getElement } from './index-68fca061.js';
-import { g as getIonMode } from './ionic-global-686539a0.js';
-import { c as componentOnReady } from './helpers-282dc853.js';
+import { r as registerInstance, f as createEvent, l as writeTask, h as readTask, i as h, j as Host, k as getElement } from './index-22aea243.js';
+import { g as getIonMode } from './ionic-global-2f4a12b1.js';
 
 const infiniteScrollCss = "ion-infinite-scroll{display:none;width:100%}.infinite-scroll-enabled{display:block}";
 
@@ -94,7 +93,6 @@ let InfiniteScroll = class {
       console.error('<ion-infinite-scroll> must be used inside an <ion-content>');
       return;
     }
-    await new Promise(resolve => componentOnReady(contentEl, resolve));
     this.scrollEl = await contentEl.getScrollElement();
     this.thresholdChanged();
     this.disabledChanged();

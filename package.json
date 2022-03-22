@@ -6,7 +6,7 @@
     "start": "stencil build --dev --watch --serve"
   },
   "dependencies": {
-    "@ionic/core": "6.0.0-rc.2",
+    "@ionic/core": "^5.10.0-dev.202112062007.8bcbbaa",
     "@stencil/core": "2.9.0"
   }
 }

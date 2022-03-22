@@ -1,7 +1,7 @@
-import { r as registerInstance, k as createEvent, h, i as Host, j as getElement } from './index-68fca061.js';
-import { g as getIonMode } from './ionic-global-686539a0.js';
-import { e as clamp, h as debounceEvent, i as inheritAttributes, m as getAriaLabel, d as renderHiddenInput } from './helpers-282dc853.js';
-import { c as createColorClasses, h as hostContext } from './theme-c336c9d9.js';
+import { r as registerInstance, f as createEvent, i as h, j as Host, k as getElement } from './index-22aea243.js';
+import { g as getIonMode } from './ionic-global-2f4a12b1.js';
+import { f as clamp, i as debounceEvent, j as inheritAttributes, d as getAriaLabel, e as renderHiddenInput } from './helpers-d3df6ac7.js';
+import { c as createColorClasses, h as hostContext } from './theme-12606872.js';
 
 const rangeIosCss = ":host{--knob-handle-size:calc(var(--knob-size) * 2);display:flex;position:relative;flex:3;align-items:center;font-family:var(--ion-font-family, inherit);user-select:none;z-index:2}:host(.range-disabled){pointer-events:none}::slotted(ion-label){flex:initial}::slotted(ion-icon[slot]){font-size:24px}.range-slider{position:relative;flex:1;width:100%;height:var(--height);contain:size layout style;cursor:grab;touch-action:pan-y}:host(.range-pressed) .range-slider{cursor:grabbing}.range-pin{position:absolute;background:var(--ion-color-base);color:var(--ion-color-contrast);text-align:center;box-sizing:border-box}.range-knob-handle{left:0;top:calc((var(--height) - var(--knob-handle-size)) / 2);margin-left:calc(0px - var(--knob-handle-size) / 2);position:absolute;width:var(--knob-handle-size);height:var(--knob-handle-size);text-align:center}[dir=rtl] .range-knob-handle,:host-context([dir=rtl]) .range-knob-handle{left:unset;right:unset;right:0}@supports (margin-inline-start: 0) or (-webkit-margin-start: 0){.range-knob-handle{margin-left:unset;-webkit-margin-start:calc(0px - var(--knob-handle-size) / 2);margin-inline-start:calc(0px - var(--knob-handle-size) / 2)}}[dir=rtl] .range-knob-handle,:host-context([dir=rtl]) .range-knob-handle{left:unset}.range-knob-handle:active,.range-knob-handle:focus{outline:none}.range-bar{border-radius:var(--bar-border-radius);left:0;top:calc((var(--height) - var(--bar-height)) / 2);position:absolute;width:100%;height:var(--bar-height);background:var(--bar-background);pointer-events:none}[dir=rtl] .range-bar,:host-context([dir=rtl]) .range-bar{left:unset;right:unset;right:0}[dir=rtl] .range-bar,:host-context([dir=rtl]) .range-bar{left:unset}.range-knob{border-radius:var(--knob-border-radius);left:calc(50% - var(--knob-size) / 2);top:calc(50% - var(--knob-size) / 2);position:absolute;width:var(--knob-size);height:var(--knob-size);background:var(--knob-background);box-shadow:var(--knob-box-shadow);z-index:2;pointer-events:none}[dir=rtl] .range-knob,:host-context([dir=rtl]) .range-knob{left:unset;right:unset;right:calc(50% - var(--knob-size) / 2)}[dir=rtl] .range-knob,:host-context([dir=rtl]) .range-knob{left:unset}:host(.range-pressed) .range-bar-active{will-change:left, right}:host(.in-item){width:100%}:host(.in-item) ::slotted(ion-label){align-self:center}:host{--knob-border-radius:50%;--knob-background:#ffffff;--knob-box-shadow:0 3px 1px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.13), 0 0 0 1px rgba(0, 0, 0, 0.02);--knob-size:28px;--bar-height:2px;--bar-background:rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.1);--bar-background-active:var(--ion-color-primary, #3880ff);--bar-border-radius:0;--height:42px;padding-left:16px;padding-right:16px;padding-top:8px;padding-bottom:8px}@supports (margin-inline-start: 0) or (-webkit-margin-start: 0){:host{padding-left:unset;padding-right:unset;-webkit-padding-start:16px;padding-inline-start:16px;-webkit-padding-end:16px;padding-inline-end:16px}}:host(.ion-color) .range-bar-active,:host(.ion-color) .range-tick-active{background:var(--ion-color-base)}::slotted([slot=start]){margin-left:0;margin-right:16px;margin-top:0;margin-bottom:0}@supports (margin-inline-start: 0) or (-webkit-margin-start: 0){::slotted([slot=start]){margin-left:unset;margin-right:unset;-webkit-margin-start:0;margin-inline-start:0;-webkit-margin-end:16px;margin-inline-end:16px}}::slotted([slot=end]){margin-left:16px;margin-right:0;margin-top:0;margin-bottom:0}@supports (margin-inline-start: 0) or (-webkit-margin-start: 0){::slotted([slot=end]){margin-left:unset;margin-right:unset;-webkit-margin-start:16px;margin-inline-start:16px;-webkit-margin-end:0;margin-inline-end:0}}:host(.range-has-pin){padding-top:20px}.range-bar-active{bottom:0;width:auto;background:var(--bar-background-active)}.range-tick{margin-left:-1px;border-radius:0;position:absolute;top:18px;width:2px;height:8px;background:rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.1);pointer-events:none}@supports (margin-inline-start: 0) or (-webkit-margin-start: 0){.range-tick{margin-left:unset;-webkit-margin-start:-1px;margin-inline-start:-1px}}.range-tick-active{background:var(--bar-background-active)}.range-pin{transform:translate3d(0,  28px,  0) scale(0.01);padding-left:8px;padding-right:8px;padding-top:8px;padding-bottom:8px;display:inline-block;position:relative;top:-20px;min-width:28px;transition:transform 120ms ease;background:transparent;color:var(--ion-text-color, #000);font-size:12px;text-align:center}@supports (margin-inline-start: 0) or (-webkit-margin-start: 0){.range-pin{padding-left:unset;padding-right:unset;-webkit-padding-start:8px;padding-inline-start:8px;-webkit-padding-end:8px;padding-inline-end:8px}}.range-knob-pressed .range-pin{transform:translate3d(0,  0,  0) scale(1)}:host(.range-disabled){opacity:0.5}";
 
@@ -49,11 +49,6 @@ let Range = class {
      */
     this.pin = false;
     /**
-     * A callback used to format the pin text.
-     * By default the pin text is set to `Math.round(value)`.
-     */
-    this.pinFormatter = (value) => Math.round(value);
-    /**
      * If `true`, the knob snaps to tick marks evenly spaced based
      * on the step property value.
      */
@@ -92,7 +87,7 @@ let Range = class {
     this.setupGesture = async () => {
       const rangeSlider = this.rangeSlider;
       if (rangeSlider) {
-        this.gesture = (await import('./index-c31991b6.js')).createGesture({
+        this.gesture = (await import('./index-d086042f.js')).createGesture({
           el: rangeSlider,
           gestureName: 'range',
           gesturePriority: 100,
@@ -311,7 +306,7 @@ let Range = class {
     }
   }
   render() {
-    const { min, max, step, el, handleKeyboard, pressedKnob, disabled, pin, ratioLower, ratioUpper, inheritedAttributes, rangeId, pinFormatter } = this;
+    const { min, max, step, el, handleKeyboard, pressedKnob, disabled, pin, ratioLower, ratioUpper, inheritedAttributes, rangeId } = this;
     /**
      * Look for external label, ion-label, or aria-labelledby.
      * If none, see if user placed an aria-label on the host
@@ -365,7 +360,6 @@ let Range = class {
       value: this.valA,
       ratio: this.ratioA,
       pin,
-      pinFormatter,
       disabled,
       handleKeyboard,
       min,
@@ -377,7 +371,6 @@ let Range = class {
       value: this.valB,
       ratio: this.ratioB,
       pin,
-      pinFormatter,
       disabled,
       handleKeyboard,
       min,
@@ -394,7 +387,7 @@ let Range = class {
     "value": ["valueChanged"]
   }; }
 };
-const renderKnob = (isRTL, { knob, value, ratio, min, max, disabled, pressed, pin, handleKeyboard, labelText, pinFormatter }) => {
+const renderKnob = (isRTL, { knob, value, ratio, min, max, disabled, pressed, pin, handleKeyboard, labelText }) => {
   const start = isRTL ? 'right' : 'left';
   const knobStyle = () => {
     const style = {};
@@ -420,7 +413,7 @@ const renderKnob = (isRTL, { knob, value, ratio, min, max, disabled, pressed, pi
       'range-knob-pressed': pressed,
       'range-knob-min': value === min,
       'range-knob-max': value === max
-    }, style: knobStyle(), role: "slider", tabindex: disabled ? -1 : 0, "aria-label": labelText, "aria-valuemin": min, "aria-valuemax": max, "aria-disabled": disabled ? 'true' : null, "aria-valuenow": value }, pin && h("div", { class: "range-pin", role: "presentation", part: "pin" }, pinFormatter(value)), h("div", { class: "range-knob", role: "presentation", part: "knob" })));
+    }, style: knobStyle(), role: "slider", tabindex: disabled ? -1 : 0, "aria-label": labelText, "aria-valuemin": min, "aria-valuemax": max, "aria-disabled": disabled ? 'true' : null, "aria-valuenow": value }, pin && h("div", { class: "range-pin", role: "presentation", part: "pin" }, Math.round(value)), h("div", { class: "range-knob", role: "presentation", part: "knob" })));
 };
 const ratioToValue = (ratio, min, max, step) => {
   let value = (max - min) * ratio;

@@ -69,6 +69,14 @@ export class MyPage {
           <div>
             <ion-button
               size="small"
+              onClick={(ev) => log(ev, router.push("b"))}
+            >
+              router.push('b')
+            </ion-button>
+          </div>
+          <div>
+            <ion-button
+              size="small"
               onClick={(ev) => log(ev, router.push("a/b"))}
             >
               router.push('a/b')
@@ -126,6 +134,21 @@ export class MyPage {
               onClick={(ev) => log(ev, nav.getPrevious())}
             >
               nav.getPrevious()
+            </ion-button>
+          </div>
+          <div>
+            <ion-button
+              size="small"
+              onClick={(ev) =>
+                log(
+                  ev,
+                  nav.push("my-content-page", {
+                    content: () => "This is dynamic content",
+                  })
+                )
+              }
+            >
+              nav.push(content)
             </ion-button>
           </div>
         </div>

@@ -1,11 +1,11 @@
-import { r as registerInstance, k as createEvent, o as Build, h, i as Host, j as getElement } from './index-68fca061.js';
-import { c as config, g as getIonMode } from './ionic-global-686539a0.js';
-import { g as getTimeGivenProgression } from './cubic-bezier-a7ad9c8e.js';
-import { GESTURE_CONTROLLER } from './index-c31991b6.js';
-import { k as isEndSide, i as inheritAttributes, l as assert, e as clamp } from './helpers-282dc853.js';
-import { m as menuController } from './index-1e0287c0.js';
-import './hardware-back-button-b6ccf74a.js';
-import './animation-67bd1981.js';
+import { r as registerInstance, f as createEvent, n as Build, i as h, j as Host, k as getElement } from './index-22aea243.js';
+import { c as config, g as getIonMode } from './ionic-global-2f4a12b1.js';
+import { g as getTimeGivenProgression } from './cubic-bezier-ed243a9b.js';
+import { GESTURE_CONTROLLER } from './index-d086042f.js';
+import { k as isEndSide, j as inheritAttributes, l as assert, f as clamp } from './helpers-d3df6ac7.js';
+import { m as menuController } from './index-30db3f87.js';
+import './hardware-back-button-508e48cf.js';
+import './animation-024af6a2.js';
 
 const menuIosCss = ":host{--width:304px;--min-width:auto;--max-width:auto;--height:100%;--min-height:auto;--max-height:auto;--background:var(--ion-background-color, #fff);left:0;right:0;top:0;bottom:0;display:none;position:absolute;contain:strict}:host(.show-menu){display:block}.menu-inner{left:0;right:auto;top:0;bottom:0;transform:translate3d(-9999px,  0,  0);display:flex;position:absolute;flex-direction:column;justify-content:space-between;width:var(--width);min-width:var(--min-width);max-width:var(--max-width);height:var(--height);min-height:var(--min-height);max-height:var(--max-height);background:var(--background);contain:strict}[dir=rtl] .menu-inner,:host-context([dir=rtl]) .menu-inner{left:unset;right:unset;left:auto;right:0}[dir=rtl] .menu-inner,:host-context([dir=rtl]) .menu-inner{transform:translate3d(calc(-1 * -9999px),  0,  0)}:host(.menu-side-start) .menu-inner{--ion-safe-area-right:0px;right:auto;left:0}:host(.menu-side-end) .menu-inner{--ion-safe-area-left:0px;right:0;left:auto;}ion-backdrop{display:none;opacity:0.01;z-index:-1}@media (max-width: 340px){.menu-inner{--width:264px}}:host(.menu-type-reveal){z-index:0}:host(.menu-type-reveal.show-menu) .menu-inner{transform:translate3d(0,  0,  0)}:host(.menu-type-overlay){z-index:1000}:host(.menu-type-overlay) .show-backdrop{display:block;cursor:pointer}:host(.menu-pane-visible){width:var(--width);min-width:var(--min-width);max-width:var(--max-width)}:host(.menu-pane-visible) .menu-inner{left:0;right:0;width:auto;transform:none !important;box-shadow:none !important}:host(.menu-pane-visible) ion-backdrop{display:hidden !important;}:host(.menu-type-push){z-index:1000}:host(.menu-type-push) .show-backdrop{display:block}";
 
@@ -79,11 +79,6 @@ let Menu = class {
     this.updateState();
   }
   async connectedCallback() {
-    // TODO: connectedCallback is fired in CE build
-    // before WC is defined. This needs to be fixed in Stencil.
-    if (typeof customElements !== 'undefined') {
-      await customElements.whenDefined('ion-menu');
-    }
     if (this.type === undefined) {
       this.type = config.get('menuType', 'overlay');
     }
@@ -112,9 +107,6 @@ AFTER:
       console.error('Menu: must have a "content" element to listen for drag events on.');
       return;
     }
-    if (this.el.contains(content)) {
-      console.error(`Menu: "contentId" should refer to the main view's ion-content, not the ion-content inside of the ion-menu.`);
-    }
     this.contentEl = content;
     // add menu's content classes
     content.classList.add('menu-content');
@@ -122,7 +114,7 @@ AFTER:
     this.sideChanged();
     // register this menu with the app's menu controller
     menuController._register(this);
-    this.gesture = (await import('./index-c31991b6.js')).createGesture({
+    this.gesture = (await import('./index-d086042f.js')).createGesture({
       el: document,
       gestureName: 'menu-swipe',
       gesturePriority: 30,

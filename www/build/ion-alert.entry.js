@@ -1,18 +1,15 @@
-import { r as registerInstance, k as createEvent, n as forceUpdate, h, i as Host, j as getElement } from './index-68fca061.js';
-import { g as getIonMode } from './ionic-global-686539a0.js';
-import { c as createButtonActiveGesture } from './button-active-3da727d2.js';
-import { B as BACKDROP, i as isCancel, a as prepareOverlay, p as present, d as dismiss, e as eventMethod, s as safeCall } from './overlays-842c2821.js';
-import { s as sanitizeDOMString } from './index-435af8e6.js';
-import { g as getClassMap } from './theme-c336c9d9.js';
-import { c as createAnimation } from './animation-67bd1981.js';
-import './haptic-267cb79b.js';
-import './index-c31991b6.js';
-import './hardware-back-button-b6ccf74a.js';
-import './helpers-282dc853.js';
+import { r as registerInstance, f as createEvent, m as forceUpdate, i as h, j as Host, k as getElement } from './index-22aea243.js';
+import { g as getIonMode } from './ionic-global-2f4a12b1.js';
+import { c as createButtonActiveGesture } from './button-active-550b0369.js';
+import { B as BACKDROP, i as isCancel, a as prepareOverlay, p as present, d as dismiss, e as eventMethod, s as safeCall } from './overlays-3dcf8c67.js';
+import { s as sanitizeDOMString } from './index-cc97b114.js';
+import { g as getClassMap } from './theme-12606872.js';
+import { c as createAnimation } from './animation-024af6a2.js';
+import './haptic-43a3db5a.js';
+import './index-d086042f.js';
+import './hardware-back-button-508e48cf.js';
+import './helpers-d3df6ac7.js';
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
 /**
  * iOS Alert Enter Animation
  */
@@ -40,9 +37,6 @@ const iosEnterAnimation = (baseEl) => {
     .addAnimation([backdropAnimation, wrapperAnimation]);
 };
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
 /**
  * iOS Alert Leave Animation
  */
@@ -66,9 +60,6 @@ const iosLeaveAnimation = (baseEl) => {
     .addAnimation([backdropAnimation, wrapperAnimation]);
 };
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
 /**
  * Md Alert Enter Animation
  */
@@ -96,9 +87,6 @@ const mdEnterAnimation = (baseEl) => {
     .addAnimation([backdropAnimation, wrapperAnimation]);
 };
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
 /**
  * Md Alert Leave Animation
  */
@@ -429,7 +417,7 @@ let Alert = class {
       'alert-button-group': true,
       'alert-button-group-vertical': buttons.length > 2
     };
-    return (h("div", { class: alertButtonGroupClass }, buttons.map(button => h("button", { type: "button", id: button.id, class: buttonClass(button), tabIndex: 0, onClick: () => this.buttonClick(button) }, h("span", { class: "alert-button-inner" }, button.text), mode === 'md' && h("ion-ripple-effect", null)))));
+    return (h("div", { class: alertButtonGroupClass }, buttons.map(button => h("button", { type: "button", class: buttonClass(button), tabIndex: 0, onClick: () => this.buttonClick(button) }, h("span", { class: "alert-button-inner" }, button.text), mode === 'md' && h("ion-ripple-effect", null)))));
   }
   render() {
     const { overlayIndex, header, subHeader, htmlAttributes } = this;

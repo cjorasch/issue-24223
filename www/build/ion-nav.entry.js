@@ -1,13 +1,10 @@
-import { r as registerInstance, k as createEvent, o as Build, h, j as getElement } from './index-68fca061.js';
-import { g as getIonMode, c as config } from './ionic-global-686539a0.js';
-import { g as getTimeGivenProgression } from './cubic-bezier-a7ad9c8e.js';
-import { l as assert } from './helpers-282dc853.js';
-import { l as lifecycle, L as LIFECYCLE_WILL_UNLOAD, a as LIFECYCLE_WILL_LEAVE, b as LIFECYCLE_DID_LEAVE, t as transition, s as setPageHidden } from './index-2b4f034f.js';
-import { a as attachComponent } from './framework-delegate-0383756d.js';
+import { r as registerInstance, f as createEvent, n as Build, i as h, k as getElement } from './index-22aea243.js';
+import { g as getIonMode, c as config } from './ionic-global-2f4a12b1.js';
+import { g as getTimeGivenProgression } from './cubic-bezier-ed243a9b.js';
+import { l as assert } from './helpers-d3df6ac7.js';
+import { l as lifecycle, L as LIFECYCLE_WILL_UNLOAD, a as LIFECYCLE_WILL_LEAVE, b as LIFECYCLE_DID_LEAVE, t as transition, s as setPageHidden } from './index-a35d4106.js';
+import { a as attachComponent } from './framework-delegate-5e3f6c01.js';
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
 const VIEW_STATE_NEW = 1;
 const VIEW_STATE_ATTACHED = 2;
 const VIEW_STATE_DESTROYED = 3;
@@ -147,7 +144,7 @@ let Nav = class {
   }
   async componentDidLoad() {
     this.rootChanged();
-    this.gesture = (await import('./swipe-back-a2da3d25.js')).createSwipeBackGesture(this.el, this.canStart.bind(this), this.onStart.bind(this), this.onMove.bind(this), this.onEnd.bind(this));
+    this.gesture = (await import('./swipe-back-851441c0.js')).createSwipeBackGesture(this.el, this.canStart.bind(this), this.onStart.bind(this), this.onMove.bind(this), this.onEnd.bind(this));
     this.swipeGestureChanged();
   }
   disconnectedCallback() {

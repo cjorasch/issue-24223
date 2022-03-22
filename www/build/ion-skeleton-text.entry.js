@@ -1,6 +1,6 @@
-import { r as registerInstance, h, i as Host, j as getElement } from './index-68fca061.js';
-import { c as config, g as getIonMode } from './ionic-global-686539a0.js';
-import { h as hostContext } from './theme-c336c9d9.js';
+import { r as registerInstance, i as h, j as Host, k as getElement } from './index-22aea243.js';
+import { c as config, g as getIonMode } from './ionic-global-2f4a12b1.js';
+import { h as hostContext } from './theme-12606872.js';
 
 const skeletonTextCss = ":host{--background:rgba(var(--background-rgb, var(--ion-text-color-rgb, 0, 0, 0)), 0.065);border-radius:var(--border-radius, inherit);display:block;width:100%;height:inherit;margin-top:4px;margin-bottom:4px;background:var(--background);line-height:10px;user-select:none;pointer-events:none}span{display:inline-block}:host(.in-media){margin-left:0;margin-right:0;margin-top:0;margin-bottom:0;height:100%}:host(.skeleton-text-animated){position:relative;background:linear-gradient(to right, rgba(var(--background-rgb, var(--ion-text-color-rgb, 0, 0, 0)), 0.065) 8%, rgba(var(--background-rgb, var(--ion-text-color-rgb, 0, 0, 0)), 0.135) 18%, rgba(var(--background-rgb, var(--ion-text-color-rgb, 0, 0, 0)), 0.065) 33%);background-size:800px 104px;animation-duration:1s;animation-fill-mode:forwards;animation-iteration-count:infinite;animation-name:shimmer;animation-timing-function:linear}@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}";
 

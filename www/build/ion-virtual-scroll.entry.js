@@ -1,9 +1,6 @@
-import { r as registerInstance, l as readTask, m as writeTask, n as forceUpdate, h, i as Host, j as getElement } from './index-68fca061.js';
-import { c as componentOnReady } from './helpers-282dc853.js';
+import { r as registerInstance, h as readTask, l as writeTask, m as forceUpdate, i as h, j as Host, k as getElement } from './index-22aea243.js';
+import { c as componentOnReady } from './helpers-d3df6ac7.js';
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
 const CELL_TYPE_ITEM = 'item';
 const CELL_TYPE_HEADER = 'header';
 const CELL_TYPE_FOOTER = 'footer';
@@ -11,9 +8,6 @@ const NODE_CHANGE_NONE = 0;
 const NODE_CHANGE_POSITION = 1;
 const NODE_CHANGE_CELL = 2;
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
 const MIN_READS = 2;
 const updateVDom = (dom, heightIndex, cells, range) => {
   // reset dom

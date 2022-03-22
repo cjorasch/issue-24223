@@ -1,7 +1,7 @@
-import { r as registerInstance, k as createEvent, m as writeTask, h, i as Host, j as getElement } from './index-68fca061.js';
-import { c as config, g as getIonMode } from './ionic-global-686539a0.js';
-import { p as pointerCoord } from './helpers-282dc853.js';
-import { c as createColorClasses, h as hostContext } from './theme-c336c9d9.js';
+import { r as registerInstance, f as createEvent, l as writeTask, i as h, j as Host, k as getElement } from './index-22aea243.js';
+import { c as config, g as getIonMode } from './ionic-global-2f4a12b1.js';
+import { p as pointerCoord } from './helpers-d3df6ac7.js';
+import { c as createColorClasses, h as hostContext } from './theme-12606872.js';
 
 const segmentIosCss = ":host{--ripple-color:currentColor;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:flex;position:relative;align-items:stretch;justify-content:center;width:100%;background:var(--background);font-family:var(--ion-font-family, inherit);text-align:center;contain:paint;user-select:none}:host(.segment-scrollable){justify-content:start;width:auto;overflow-x:auto}:host(.segment-scrollable::-webkit-scrollbar){display:none}:host{--background:rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.065);border-radius:8px;overflow:hidden;z-index:0}:host(.ion-color){background:rgba(var(--ion-color-base-rgb), 0.065)}:host(.in-toolbar){margin-left:auto;margin-right:auto;margin-top:0;margin-bottom:0;width:auto}@supports (margin-inline-start: 0) or (-webkit-margin-start: 0){:host(.in-toolbar){margin-left:unset;margin-right:unset;-webkit-margin-start:auto;margin-inline-start:auto;-webkit-margin-end:auto;margin-inline-end:auto}}:host(.in-toolbar:not(.ion-color)){background:var(--ion-toolbar-segment-background, var(--background))}:host(.in-toolbar-color:not(.ion-color)){background:rgba(var(--ion-color-contrast-rgb), 0.11)}";
 
@@ -29,11 +29,6 @@ let Segment = class {
      * If `true`, users will be able to swipe between segment buttons to activate them.
      */
     this.swipeGesture = true;
-    /**
-     * If `true`, navigating to an `ion-segment-button` with the keyboard will focus and select the element.
-     * If `false`, keyboard navigation will only focus the `ion-segment-button` element.
-     */
-    this.selectOnFocus = false;
     this.onClick = (ev) => {
       const current = ev.target;
       const previous = this.checked;
@@ -54,22 +49,6 @@ let Segment = class {
         }
       }
       this.checked = current;
-    };
-    this.getSegmentButton = (selector) => {
-      const buttons = this.getButtons().filter(button => !button.disabled);
-      const currIndex = buttons.findIndex(button => button === document.activeElement);
-      switch (selector) {
-        case 'first':
-          return buttons[0];
-        case 'last':
-          return buttons[buttons.length - 1];
-        case 'next':
-          return buttons[currIndex + 1] || buttons[0];
-        case 'previous':
-          return buttons[currIndex - 1] || buttons[buttons.length - 1];
-        default:
-          return null;
-      }
     };
   }
   colorChanged(value, oldValue) {
@@ -118,8 +97,7 @@ let Segment = class {
   }
   async componentDidLoad() {
     this.setCheckedClasses();
-    this.ensureFocusable();
-    this.gesture = (await import('./index-c31991b6.js')).createGesture({
+    this.gesture = (await import('./index-d086042f.js')).createGesture({
       el: this.el,
       gestureName: 'segment',
       gesturePriority: 100,
@@ -278,16 +256,7 @@ let Segment = class {
     // can move up and down off of the segment
     const currentX = detail.currentX;
     const previousY = rect.top + (rect.height / 2);
-    /**
-     * Segment can be used inside the shadow dom
-     * so doing document.elementFromPoint would never
-     * return a segment button in that instance.
-     * We use getRootNode to which will return the parent
-     * shadow root if used inside a shadow component and
-     * returns document otherwise.
-     */
-    const root = this.el.getRootNode();
-    const nextEl = root.elementFromPoint(currentX, previousY);
+    const nextEl = document.elementFromPoint(currentX, previousY);
     const decreaseIndex = isRTL ? currentX > (left + width) : currentX < left;
     const increaseIndex = isRTL ? currentX < left : currentX > (left + width);
     // If the indicator is currently activated then we have started the gesture
@@ -339,56 +308,6 @@ let Segment = class {
     this.ionStyle.emit({
       'segment': true
     });
-  }
-  onKeyDown(ev) {
-    const isRTL = document.dir === 'rtl';
-    let keyDownSelectsButton = this.selectOnFocus;
-    let current;
-    switch (ev.key) {
-      case 'ArrowRight':
-        ev.preventDefault();
-        current = isRTL ? this.getSegmentButton('previous') : this.getSegmentButton('next');
-        break;
-      case 'ArrowLeft':
-        ev.preventDefault();
-        current = isRTL ? this.getSegmentButton('next') : this.getSegmentButton('previous');
-        break;
-      case 'Home':
-        ev.preventDefault();
-        current = this.getSegmentButton('first');
-        break;
-      case 'End':
-        ev.preventDefault();
-        current = this.getSegmentButton('last');
-        break;
-      case ' ':
-      case 'Enter':
-        ev.preventDefault();
-        current = document.activeElement;
-        keyDownSelectsButton = true;
-      default:
-        break;
-    }
-    if (!current) {
-      return;
-    }
-    if (keyDownSelectsButton) {
-      const previous = this.checked || current;
-      this.checkButton(previous, current);
-    }
-    current.focus();
-  }
-  /* By default, focus is delegated to the selected `ion-segment-button`.
-   * If there is no selected button, focus will instead pass to the first child button.
-  **/
-  ensureFocusable() {
-    var _a;
-    if (this.value !== undefined) {
-      return;
-    }
-    ;
-    const buttons = this.getButtons();
-    (_a = buttons[0]) === null || _a === void 0 ? void 0 : _a.setAttribute('tabindex', '0');
   }
   render() {
     const mode = getIonMode(this);

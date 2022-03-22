@@ -1,11 +1,8 @@
-import { l as readTask, m as writeTask, r as registerInstance, h, i as Host, j as getElement } from './index-68fca061.js';
-import { g as getIonMode } from './ionic-global-686539a0.js';
-import { e as clamp, c as componentOnReady, i as inheritAttributes } from './helpers-282dc853.js';
-import { h as hostContext } from './theme-c336c9d9.js';
+import { h as readTask, l as writeTask, r as registerInstance, i as h, j as Host, k as getElement } from './index-22aea243.js';
+import { g as getIonMode } from './ionic-global-2f4a12b1.js';
+import { f as clamp, j as inheritAttributes } from './helpers-d3df6ac7.js';
+import { h as hostContext } from './theme-12606872.js';
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
 const TRANSITION = 'all 0.2s ease-in-out';
 const cloneElement = (tagName) => {
   const getCachedEl = document.querySelector(`${tagName}.ion-cloned-element`);
@@ -50,21 +47,12 @@ const handleContentScroll = (scrollEl, scrollHeaderIndex, contentEl) => {
     }
   });
 };
-const setToolbarBackgroundOpacity = (headerEl, opacity) => {
-  /**
-   * Fading in the backdrop opacity
-   * should happen after the large title
-   * has collapsed, so it is handled
-   * by handleHeaderFade()
-   */
-  if (headerEl.collapse === 'fade') {
-    return;
-  }
+const setToolbarBackgroundOpacity = (toolbar, opacity) => {
   if (opacity === undefined) {
-    headerEl.style.removeProperty('--opacity-scale');
+    toolbar.background.style.removeProperty('--opacity');
   }
   else {
-    headerEl.style.setProperty('--opacity-scale', opacity.toString());
+    toolbar.background.style.setProperty('--opacity', opacity.toString());
   }
 };
 const handleToolbarBorderIntersection = (ev, mainHeaderIndex, scrollTop) => {
@@ -83,7 +71,9 @@ const handleToolbarBorderIntersection = (ev, mainHeaderIndex, scrollTop) => {
    * fire here as well.
    */
   const scale = (ev[0].intersectionRatio > 0.9 || scrollTop <= 0) ? 0 : ((1 - ev[0].intersectionRatio) * 100) / 75;
-  setToolbarBackgroundOpacity(mainHeaderIndex.el, (scale === 1) ? undefined : scale);
+  mainHeaderIndex.toolbars.forEach(toolbar => {
+    setToolbarBackgroundOpacity(toolbar, (scale === 1) ? undefined : scale);
+  });
 };
 /**
  * If toolbars are intersecting, hide the scrollable toolbar content
@@ -122,7 +112,7 @@ const handleToolbarIntersection = (ev, mainHeaderIndex, scrollHeaderIndex, scrol
       if (hasValidIntersection && scrollTop > 0) {
         setHeaderActive(mainHeaderIndex);
         setHeaderActive(scrollHeaderIndex, false);
-        setToolbarBackgroundOpacity(mainHeaderIndex.el);
+        setToolbarBackgroundOpacity(mainHeaderIndex.toolbars[0]);
       }
     }
   });
@@ -146,45 +136,15 @@ const scaleLargeTitles = (toolbars = [], scale = 1, transition = false) => {
     titleDiv.style.transform = `scale3d(${scale}, ${scale}, 1)`;
   });
 };
-const handleHeaderFade = (scrollEl, baseEl, condenseHeader) => {
-  readTask(() => {
-    const scrollTop = scrollEl.scrollTop;
-    const baseElHeight = baseEl.clientHeight;
-    const fadeStart = (condenseHeader) ? condenseHeader.clientHeight : 0;
-    /**
-     * If we are using fade header with a condense
-     * header, then the toolbar backgrounds should
-     * not begin to fade in until the condense
-     * header has fully collapsed.
-     *
-     * Additionally, the main content should not
-     * overflow out of the container until the
-     * condense header has fully collapsed. When
-     * using just the condense header the content
-     * should overflow out of the container.
-     */
-    if ((condenseHeader !== null) && (scrollTop < fadeStart)) {
-      baseEl.style.setProperty('--opacity-scale', '0');
-      scrollEl.style.setProperty('clip-path', `inset(${baseElHeight}px 0px 0px 0px)`);
-      return;
-    }
-    const distanceToStart = scrollTop - fadeStart;
-    const fadeDuration = 10;
-    const scale = clamp(0, (distanceToStart / fadeDuration), 1);
-    writeTask(() => {
-      scrollEl.style.removeProperty('clip-path');
-      baseEl.style.setProperty('--opacity-scale', scale.toString());
-    });
-  });
-};
 
-const headerIosCss = "ion-header{display:block;position:relative;order:-1;width:100%;z-index:10}ion-header ion-toolbar:first-of-type{padding-top:var(--ion-safe-area-top, 0)}.header-ios ion-toolbar:last-of-type{--border-width:0 0 0.55px}@supports (backdrop-filter: blur(0)){.header-background{left:0;right:0;top:0;bottom:0;position:absolute;backdrop-filter:saturate(180%) blur(20px)}.header-translucent-ios ion-toolbar{--opacity:.8}.header-collapse-condense-inactive .header-background{backdrop-filter:blur(20px)}}.header-ios.ion-no-border ion-toolbar:last-of-type{--border-width:0}.header-collapse-fade ion-toolbar{--opacity-scale:inherit}.header-collapse-condense{z-index:9}.header-collapse-condense ion-toolbar{position:sticky;top:0}.header-collapse-condense ion-toolbar:first-of-type{padding-top:7px;z-index:1}.header-collapse-condense ion-toolbar{--background:var(--ion-background-color, #fff);z-index:0}.header-collapse-condense ion-toolbar:last-of-type{--border-width:0px}.header-collapse-condense ion-toolbar ion-searchbar{height:48px;padding-top:0px;padding-bottom:13px}.header-collapse-main{--opacity-scale:1}.header-collapse-main ion-toolbar{--opacity-scale:inherit}.header-collapse-main ion-toolbar.in-toolbar ion-title,.header-collapse-main ion-toolbar.in-toolbar ion-buttons{transition:all 0.2s ease-in-out}.header-collapse-condense-inactive:not(.header-collapse-condense) ion-toolbar.in-toolbar ion-title,.header-collapse-condense-inactive:not(.header-collapse-condense) ion-toolbar.in-toolbar ion-buttons.buttons-collapse{opacity:0;pointer-events:none}.header-collapse-condense-inactive.header-collapse-condense ion-toolbar.in-toolbar ion-title,.header-collapse-condense-inactive.header-collapse-condense ion-toolbar.in-toolbar ion-buttons.buttons-collapse{visibility:hidden}";
+const headerIosCss = "ion-header{display:block;position:relative;order:-1;width:100%;z-index:10}ion-header ion-toolbar:first-of-type{padding-top:var(--ion-safe-area-top, 0)}.header-ios ion-toolbar:last-of-type{--border-width:0 0 0.55px}@supports (backdrop-filter: blur(0)){.header-background{left:0;right:0;top:0;bottom:0;position:absolute;backdrop-filter:saturate(180%) blur(20px)}.header-translucent-ios ion-toolbar{--opacity:.8}.header-collapse-condense-inactive .header-background{backdrop-filter:blur(20px)}}.header-ios.ion-no-border ion-toolbar:last-of-type{--border-width:0}.header-collapse-condense{z-index:9}.header-collapse-condense ion-toolbar{position:sticky;top:0}.header-collapse-condense ion-toolbar:first-of-type{padding-top:7px;z-index:1}.header-collapse-condense ion-toolbar{--background:var(--ion-background-color, #fff);z-index:0}.header-collapse-condense ion-toolbar ion-searchbar{height:48px;padding-top:0px;padding-bottom:13px}.header-collapse-main ion-toolbar.in-toolbar ion-title,.header-collapse-main ion-toolbar.in-toolbar ion-buttons{transition:all 0.2s ease-in-out}.header-collapse-condense-inactive:not(.header-collapse-condense) ion-toolbar.in-toolbar ion-title,.header-collapse-condense-inactive:not(.header-collapse-condense) ion-toolbar.in-toolbar ion-buttons.buttons-collapse{opacity:0;pointer-events:none}.header-collapse-condense-inactive.header-collapse-condense ion-toolbar.in-toolbar ion-title,.header-collapse-condense-inactive.header-collapse-condense ion-toolbar.in-toolbar ion-buttons.buttons-collapse{visibility:hidden}";
 
 const headerMdCss = "ion-header{display:block;position:relative;order:-1;width:100%;z-index:10}ion-header ion-toolbar:first-of-type{padding-top:var(--ion-safe-area-top, 0)}.header-md::after{left:0;bottom:-5px;background-position:left 0 top -2px;position:absolute;width:100%;height:5px;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAHBAMAAADzDtBxAAAAD1BMVEUAAAAAAAAAAAAAAAAAAABPDueNAAAABXRSTlMUCS0gBIh/TXEAAAAaSURBVAjXYxCEAgY4UIICBmMogMsgFLtAAQCNSwXZKOdPxgAAAABJRU5ErkJggg==);background-repeat:repeat-x;content:\"\"}[dir=rtl] .header-md::after,:host-context([dir=rtl]) .header-md::after{left:unset;right:unset;right:0}[dir=rtl] .header-md::after,:host-context([dir=rtl]) .header-md::after{background-position:right 0 top -2px}.header-collapse-condense{display:none}.header-md.ion-no-border::after{display:none}";
 
 let Header = class {
   constructor(hostRef) {
     registerInstance(this, hostRef);
+    this.collapsibleHeaderInitialized = false;
     this.inheritedAttributes = {};
     /**
      * If `true`, the header will be translucent.
@@ -195,43 +155,27 @@ let Header = class {
      * attribute needs to be set on the content.
      */
     this.translucent = false;
-    this.setupFadeHeader = async (contentEl, condenseHeader) => {
-      if (!contentEl) {
-        console.error('ion-header requires a content to collapse. Make sure there is an ion-content.');
-        return;
-      }
-      await new Promise(resolve => componentOnReady(contentEl, resolve));
-      const scrollEl = this.scrollEl = await contentEl.getScrollElement();
-      /**
-       * Handle fading of toolbars on scroll
-       */
-      this.contentScrollCallback = () => { handleHeaderFade(this.scrollEl, this.el, condenseHeader); };
-      scrollEl.addEventListener('scroll', this.contentScrollCallback);
-      handleHeaderFade(this.scrollEl, this.el, condenseHeader);
-    };
   }
   componentWillLoad() {
     this.inheritedAttributes = inheritAttributes(this.el, ['role']);
   }
-  componentDidLoad() {
-    this.checkCollapsibleHeader();
+  async componentDidLoad() {
+    await this.checkCollapsibleHeader();
   }
-  componentDidUpdate() {
-    this.checkCollapsibleHeader();
+  async componentDidUpdate() {
+    await this.checkCollapsibleHeader();
   }
   disconnectedCallback() {
     this.destroyCollapsibleHeader();
   }
   async checkCollapsibleHeader() {
-    const mode = getIonMode(this);
-    if (mode !== 'ios') {
-      return;
+    // Determine if the header can collapse
+    const hasCollapse = this.collapse === 'condense';
+    const canCollapse = (hasCollapse && getIonMode(this) === 'ios') ? hasCollapse : false;
+    if (!canCollapse && this.collapsibleHeaderInitialized) {
+      this.destroyCollapsibleHeader();
     }
-    const { collapse } = this;
-    const hasCondense = collapse === 'condense';
-    const hasFade = collapse === 'fade';
-    this.destroyCollapsibleHeader();
-    if (hasCondense) {
+    else if (canCollapse && !this.collapsibleHeaderInitialized) {
       const pageEl = this.el.closest('ion-app,ion-page,.ion-page,page-inner');
       const contentEl = (pageEl) ? pageEl.querySelector('ion-content') : null;
       // Cloned elements are always needed in iOS transition
@@ -240,13 +184,7 @@ let Header = class {
         title.size = 'large';
         cloneElement('ion-back-button');
       });
-      await this.setupCondenseHeader(contentEl, pageEl);
-    }
-    else if (hasFade) {
-      const pageEl = this.el.closest('ion-app,ion-page,.ion-page,page-inner');
-      const contentEl = (pageEl) ? pageEl.querySelector('ion-content') : null;
-      const condenseHeader = (contentEl) ? contentEl.querySelector('ion-header[collapse="condense"]') : null;
-      await this.setupFadeHeader(contentEl, condenseHeader);
+      await this.setupCollapsibleHeader(contentEl, pageEl);
     }
   }
   destroyCollapsibleHeader() {
@@ -263,7 +201,7 @@ let Header = class {
       this.collapsibleMainHeader = undefined;
     }
   }
-  async setupCondenseHeader(contentEl, pageEl) {
+  async setupCollapsibleHeader(contentEl, pageEl) {
     if (!contentEl || !pageEl) {
       console.error('ion-header requires a content to collapse, make sure there is an ion-content.');
       return;
@@ -271,7 +209,6 @@ let Header = class {
     if (typeof IntersectionObserver === 'undefined') {
       return;
     }
-    await new Promise(resolve => componentOnReady(contentEl, resolve));
     this.scrollEl = await contentEl.getScrollElement();
     const headers = pageEl.querySelectorAll('ion-header');
     this.collapsibleMainHeader = Array.from(headers).find((header) => header.collapse !== 'condense');
@@ -284,7 +221,9 @@ let Header = class {
       return;
     }
     setHeaderActive(mainHeaderIndex, false);
-    setToolbarBackgroundOpacity(mainHeaderIndex.el, 0);
+    mainHeaderIndex.toolbars.forEach(toolbar => {
+      setToolbarBackgroundOpacity(toolbar, 0);
+    });
     /**
      * Handle interaction between toolbar collapse and
      * showing/hiding content in the primary ion-header
@@ -306,6 +245,7 @@ let Header = class {
         this.collapsibleMainHeader.classList.add('header-collapse-main');
       }
     });
+    this.collapsibleHeaderInitialized = true;
   }
   render() {
     const { translucent, inheritedAttributes } = this;

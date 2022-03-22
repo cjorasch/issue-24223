@@ -8,6 +8,10 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface MyApp {
     }
+    interface MyContentPage {
+        "content": () => any;
+        "header": string;
+    }
     interface MyPage {
         "s1": string;
         "s2": string;
@@ -21,6 +25,12 @@ declare global {
         prototype: HTMLMyAppElement;
         new (): HTMLMyAppElement;
     };
+    interface HTMLMyContentPageElement extends Components.MyContentPage, HTMLStencilElement {
+    }
+    var HTMLMyContentPageElement: {
+        prototype: HTMLMyContentPageElement;
+        new (): HTMLMyContentPageElement;
+    };
     interface HTMLMyPageElement extends Components.MyPage, HTMLStencilElement {
     }
     var HTMLMyPageElement: {
@@ -29,11 +39,16 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "my-app": HTMLMyAppElement;
+        "my-content-page": HTMLMyContentPageElement;
         "my-page": HTMLMyPageElement;
     }
 }
 declare namespace LocalJSX {
     interface MyApp {
+    }
+    interface MyContentPage {
+        "content"?: () => any;
+        "header"?: string;
     }
     interface MyPage {
         "s1"?: string;
@@ -42,6 +57,7 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "my-app": MyApp;
+        "my-content-page": MyContentPage;
         "my-page": MyPage;
     }
 }
@@ -50,6 +66,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "my-app": LocalJSX.MyApp & JSXBase.HTMLAttributes<HTMLMyAppElement>;
+            "my-content-page": LocalJSX.MyContentPage & JSXBase.HTMLAttributes<HTMLMyContentPageElement>;
             "my-page": LocalJSX.MyPage & JSXBase.HTMLAttributes<HTMLMyPageElement>;
         }
     }

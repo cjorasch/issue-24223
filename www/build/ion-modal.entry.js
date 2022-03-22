@@ -1,18 +1,15 @@
-import { r as registerInstance, k as createEvent, m as writeTask, h, i as Host, j as getElement } from './index-68fca061.js';
-import { g as getIonMode, c as config } from './ionic-global-686539a0.js';
-import { C as CoreDelegate, a as attachComponent, d as detachComponent } from './framework-delegate-0383756d.js';
-import { e as clamp, g as getElementRoot, r as raf } from './helpers-282dc853.js';
-import { B as BACKDROP, a as prepareOverlay, p as present, b as activeAnimations, d as dismiss, e as eventMethod } from './overlays-842c2821.js';
-import { g as getClassMap } from './theme-c336c9d9.js';
-import { d as deepReady } from './index-2b4f034f.js';
-import { c as createAnimation } from './animation-67bd1981.js';
-import { g as getTimeGivenProgression } from './cubic-bezier-a7ad9c8e.js';
-import { createGesture } from './index-c31991b6.js';
-import './hardware-back-button-b6ccf74a.js';
+import { r as registerInstance, f as createEvent, l as writeTask, i as h, j as Host, k as getElement } from './index-22aea243.js';
+import { g as getIonMode, c as config } from './ionic-global-2f4a12b1.js';
+import { a as attachComponent, d as detachComponent } from './framework-delegate-5e3f6c01.js';
+import { B as BACKDROP, a as prepareOverlay, p as present, c as activeAnimations, d as dismiss, e as eventMethod } from './overlays-3dcf8c67.js';
+import { g as getClassMap } from './theme-12606872.js';
+import { d as deepReady } from './index-a35d4106.js';
+import { c as createAnimation } from './animation-024af6a2.js';
+import { g as getTimeGivenProgression } from './cubic-bezier-ed243a9b.js';
+import { createGesture } from './index-d086042f.js';
+import { f as clamp } from './helpers-d3df6ac7.js';
+import './hardware-back-button-508e48cf.js';
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
 // Defaults for the card swipe animation
 const SwipeToCloseDefaults = {
   MIN_PRESENTING_SCALE: 0.93,
@@ -87,133 +84,22 @@ const computeDuration = (remaining, velocity) => {
   return clamp(400, remaining / Math.abs(velocity * 1.1), 500);
 };
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
-/**
- * Use y = mx + b to
- * figure out the backdrop value
- * at a particular x coordinate. This
- * is useful when the backdrop does
- * not begin to fade in until after
- * the 0 breakpoint.
- */
-const getBackdropValueForSheet = (x, backdropBreakpoint) => {
-  /**
-   * We will use these points:
-   * (backdropBreakpoint, 0)
-   * (maxBreakpoint, 1)
-   * We know that at the beginning breakpoint,
-   * the backdrop will be hidden. We also
-   * know that at the maxBreakpoint, the backdrop
-   * must be fully visible. maxBreakpoint should
-   * always be 1 even if the maximum value
-   * of the breakpoints array is not 1 since
-   * the animation runs from a progress of 0
-   * to a progress of 1.
-   * m = (y2 - y1) / (x2 - x1)
-   *
-   * This is simplified from:
-   * m = (1 - 0) / (maxBreakpoint - backdropBreakpoint)
-   */
-  const slope = 1 / (1 - backdropBreakpoint);
-  /**
-   * From here, compute b which is
-   * the backdrop opacity if the offset
-   * is 0. If the backdrop does not
-   * begin to fade in until after the
-   * 0 breakpoint, this b value will be
-   * negative. This is fine as we never pass
-   * b directly into the animation keyframes.
-   * b = y - mx
-   * Use a known point: (backdropBreakpoint, 0)
-   * This is simplified from:
-   * b = 0 - (backdropBreakpoint * slope)
-   */
-  const b = -(backdropBreakpoint * slope);
-  /**
-   * Finally, we can now determine the
-   * backdrop offset given an arbitrary
-   * gesture offset.
-   */
-  return (x * slope) + b;
-};
-
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
-const createSheetEnterAnimation = (opts) => {
-  const { currentBreakpoint, backdropBreakpoint } = opts;
-  /**
-   * If the backdropBreakpoint is undefined, then the backdrop
-   * should always fade in. If the backdropBreakpoint came before the
-   * current breakpoint, then the backdrop should be fading in.
-   */
-  const shouldShowBackdrop = backdropBreakpoint === undefined || backdropBreakpoint < currentBreakpoint;
-  const initialBackdrop = shouldShowBackdrop ? `calc(var(--backdrop-opacity) * ${currentBreakpoint})` : '0';
-  const backdropAnimation = createAnimation('backdropAnimation')
-    .fromTo('opacity', 0, initialBackdrop);
-  const wrapperAnimation = createAnimation('wrapperAnimation')
-    .keyframes([
-    { offset: 0, opacity: 1, transform: 'translateY(100%)' },
-    { offset: 1, opacity: 1, transform: `translateY(${100 - (currentBreakpoint * 100)}%)` }
-  ]);
-  return { wrapperAnimation, backdropAnimation };
-};
-const createSheetLeaveAnimation = (opts) => {
-  const { currentBreakpoint, backdropBreakpoint } = opts;
-  /**
-   * Backdrop does not always fade in from 0 to 1 if backdropBreakpoint
-   * is defined, so we need to account for that offset by figuring out
-   * what the current backdrop value should be.
-   */
-  const backdropValue = `calc(var(--backdrop-opacity) * ${getBackdropValueForSheet(currentBreakpoint, backdropBreakpoint)})`;
-  const defaultBackdrop = [
-    { offset: 0, opacity: backdropValue },
-    { offset: 1, opacity: 0 }
-  ];
-  const customBackdrop = [
-    { offset: 0, opacity: backdropValue },
-    { offset: backdropBreakpoint, opacity: 0 },
-    { offset: 1, opacity: 0 }
-  ];
-  const backdropAnimation = createAnimation('backdropAnimation')
-    .keyframes(backdropBreakpoint !== 0 ? customBackdrop : defaultBackdrop);
-  const wrapperAnimation = createAnimation('wrapperAnimation')
-    .keyframes([
-    { offset: 0, opacity: 1, transform: `translateY(${100 - (currentBreakpoint * 100)}%)` },
-    { offset: 1, opacity: 1, transform: `translateY(100%)` }
-  ]);
-  return { wrapperAnimation, backdropAnimation };
-};
-
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
-const createEnterAnimation$1 = () => {
-  const backdropAnimation = createAnimation()
-    .fromTo('opacity', 0.01, 'var(--backdrop-opacity)');
-  const wrapperAnimation = createAnimation()
-    .fromTo('transform', 'translateY(100vh)', 'translateY(0vh)');
-  return { backdropAnimation, wrapperAnimation };
-};
 /**
  * iOS Modal Enter Animation for the Card presentation style
  */
-const iosEnterAnimation = (baseEl, opts) => {
-  const { presentingEl, currentBreakpoint } = opts;
-  const root = getElementRoot(baseEl);
-  const { wrapperAnimation, backdropAnimation } = currentBreakpoint !== undefined ? createSheetEnterAnimation(opts) : createEnterAnimation$1();
-  backdropAnimation
-    .addElement(root.querySelector('ion-backdrop'))
+const iosEnterAnimation = (baseEl, presentingEl) => {
+  const backdropAnimation = createAnimation()
+    .addElement(baseEl.querySelector('ion-backdrop'))
+    .fromTo('opacity', 0.01, 'var(--backdrop-opacity)')
     .beforeStyles({
     'pointer-events': 'none'
   })
     .afterClearStyles(['pointer-events']);
-  wrapperAnimation
-    .addElement(root.querySelectorAll('.modal-wrapper, .modal-shadow'))
-    .beforeStyles({ 'opacity': 1 });
-  const baseAnimation = createAnimation('entering-base')
+  const wrapperAnimation = createAnimation()
+    .addElement(baseEl.querySelectorAll('.modal-wrapper, .modal-shadow'))
+    .beforeStyles({ 'opacity': 1 })
+    .fromTo('transform', 'translateY(100vh)', 'translateY(0vh)');
+  const baseAnimation = createAnimation()
     .addElement(baseEl)
     .easing('cubic-bezier(0.32,0.72,0,1)')
     .duration(500)
@@ -221,7 +107,6 @@ const iosEnterAnimation = (baseEl, opts) => {
   if (presentingEl) {
     const isMobile = window.innerWidth < 768;
     const hasCardModal = (presentingEl.tagName === 'ION-MODAL' && presentingEl.presentingElement !== undefined);
-    const presentingElRoot = getElementRoot(presentingEl);
     const presentingAnimation = createAnimation()
       .beforeStyles({
       'transform': 'translateY(0)',
@@ -233,7 +118,7 @@ const iosEnterAnimation = (baseEl, opts) => {
       /**
        * Fallback for browsers that does not support `max()` (ex: Firefox)
        * No need to worry about statusbar padding since engines like Gecko
-       * are not used as the engine for standalone Cordova/Capacitor apps
+       * are not used as the engine for standlone Cordova/Capacitor apps
        */
       const transformOffset = (!CSS.supports('width', 'max(0px, 1px)')) ? '30px' : 'max(30px, var(--ion-safe-area-top))';
       const modalTransform = hasCardModal ? '-10px' : transformOffset;
@@ -263,7 +148,7 @@ const iosEnterAnimation = (baseEl, opts) => {
           .afterStyles({
           'transform': finalTransform
         })
-          .addElement(presentingElRoot.querySelector('.modal-wrapper'))
+          .addElement(presentingEl.querySelector('.modal-wrapper'))
           .keyframes([
           { offset: 0, filter: 'contrast(1)', transform: 'translateY(0) scale(1)' },
           { offset: 1, filter: 'contrast(0.85)', transform: finalTransform }
@@ -272,7 +157,7 @@ const iosEnterAnimation = (baseEl, opts) => {
           .afterStyles({
           'transform': finalTransform
         })
-          .addElement(presentingElRoot.querySelector('.modal-shadow'))
+          .addElement(presentingEl.querySelector('.modal-shadow'))
           .keyframes([
           { offset: 0, opacity: '1', transform: 'translateY(0) scale(1)' },
           { offset: 1, opacity: '0', transform: finalTransform }
@@ -287,28 +172,18 @@ const iosEnterAnimation = (baseEl, opts) => {
   return baseAnimation;
 };
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
-const createLeaveAnimation$1 = () => {
-  const backdropAnimation = createAnimation()
-    .fromTo('opacity', 'var(--backdrop-opacity)', 0);
-  const wrapperAnimation = createAnimation()
-    .fromTo('transform', 'translateY(0vh)', 'translateY(100vh)');
-  return { backdropAnimation, wrapperAnimation };
-};
 /**
  * iOS Modal Leave Animation
  */
-const iosLeaveAnimation = (baseEl, opts, duration = 500) => {
-  const { presentingEl, currentBreakpoint } = opts;
-  const root = getElementRoot(baseEl);
-  const { wrapperAnimation, backdropAnimation } = currentBreakpoint !== undefined ? createSheetLeaveAnimation(opts) : createLeaveAnimation$1();
-  backdropAnimation.addElement(root.querySelector('ion-backdrop'));
-  wrapperAnimation
-    .addElement(root.querySelectorAll('.modal-wrapper, .modal-shadow'))
-    .beforeStyles({ 'opacity': 1 });
-  const baseAnimation = createAnimation('leaving-base')
+const iosLeaveAnimation = (baseEl, presentingEl, duration = 500) => {
+  const backdropAnimation = createAnimation()
+    .addElement(baseEl.querySelector('ion-backdrop'))
+    .fromTo('opacity', 'var(--backdrop-opacity)', 0.0);
+  const wrapperAnimation = createAnimation()
+    .addElement(baseEl.querySelectorAll('.modal-wrapper, .modal-shadow'))
+    .beforeStyles({ 'opacity': 1 })
+    .fromTo('transform', 'translateY(0vh)', 'translateY(100vh)');
+  const baseAnimation = createAnimation()
     .addElement(baseEl)
     .easing('cubic-bezier(0.32,0.72,0,1)')
     .duration(duration)
@@ -316,7 +191,6 @@ const iosLeaveAnimation = (baseEl, opts, duration = 500) => {
   if (presentingEl) {
     const isMobile = window.innerWidth < 768;
     const hasCardModal = (presentingEl.tagName === 'ION-MODAL' && presentingEl.presentingElement !== undefined);
-    const presentingElRoot = getElementRoot(presentingEl);
     const presentingAnimation = createAnimation()
       .beforeClearStyles(['transform'])
       .afterClearStyles(['transform'])
@@ -354,7 +228,7 @@ const iosLeaveAnimation = (baseEl, opts, duration = 500) => {
         const toPresentingScale = (hasCardModal) ? SwipeToCloseDefaults.MIN_PRESENTING_SCALE : 1;
         const finalTransform = `translateY(-10px) scale(${toPresentingScale})`;
         presentingAnimation
-          .addElement(presentingElRoot.querySelector('.modal-wrapper'))
+          .addElement(presentingEl.querySelector('.modal-wrapper'))
           .afterStyles({
           'transform': 'translate3d(0, 0, 0)'
         })
@@ -363,7 +237,7 @@ const iosLeaveAnimation = (baseEl, opts, duration = 500) => {
           { offset: 1, filter: 'contrast(1)', transform: 'translateY(0) scale(1)' }
         ]);
         const shadowAnimation = createAnimation()
-          .addElement(presentingElRoot.querySelector('.modal-shadow'))
+          .addElement(presentingEl.querySelector('.modal-shadow'))
           .afterStyles({
           'transform': 'translateY(0) scale(1)'
         })
@@ -381,251 +255,60 @@ const iosLeaveAnimation = (baseEl, opts, duration = 500) => {
   return baseAnimation;
 };
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
-const createEnterAnimation = () => {
-  const backdropAnimation = createAnimation()
-    .fromTo('opacity', 0.01, 'var(--backdrop-opacity)');
-  const wrapperAnimation = createAnimation()
-    .keyframes([
-    { offset: 0, opacity: 0.01, transform: 'translateY(40px)' },
-    { offset: 1, opacity: 1, transform: `translateY(0px)` }
-  ]);
-  return { backdropAnimation, wrapperAnimation };
-};
 /**
  * Md Modal Enter Animation
  */
-const mdEnterAnimation = (baseEl, opts) => {
-  const { currentBreakpoint } = opts;
-  const root = getElementRoot(baseEl);
-  const { wrapperAnimation, backdropAnimation } = currentBreakpoint !== undefined ? createSheetEnterAnimation(opts) : createEnterAnimation();
+const mdEnterAnimation = (baseEl) => {
+  const baseAnimation = createAnimation();
+  const backdropAnimation = createAnimation();
+  const wrapperAnimation = createAnimation();
   backdropAnimation
-    .addElement(root.querySelector('ion-backdrop'))
+    .addElement(baseEl.querySelector('ion-backdrop'))
+    .fromTo('opacity', 0.01, 'var(--backdrop-opacity)')
     .beforeStyles({
     'pointer-events': 'none'
   })
     .afterClearStyles(['pointer-events']);
   wrapperAnimation
-    .addElement(root.querySelector('.modal-wrapper'));
-  return createAnimation()
+    .addElement(baseEl.querySelector('.modal-wrapper'))
+    .keyframes([
+    { offset: 0, opacity: 0.01, transform: 'translateY(40px)' },
+    { offset: 1, opacity: 1, transform: 'translateY(0px)' }
+  ]);
+  return baseAnimation
     .addElement(baseEl)
     .easing('cubic-bezier(0.36,0.66,0.04,1)')
     .duration(280)
     .addAnimation([backdropAnimation, wrapperAnimation]);
 };
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
-const createLeaveAnimation = () => {
-  const backdropAnimation = createAnimation()
-    .fromTo('opacity', 'var(--backdrop-opacity)', 0);
-  const wrapperAnimation = createAnimation()
-    .keyframes([
-    { offset: 0, opacity: 0.99, transform: `translateY(0px)` },
-    { offset: 1, opacity: 0, transform: 'translateY(40px)' }
-  ]);
-  return { backdropAnimation, wrapperAnimation };
-};
 /**
  * Md Modal Leave Animation
  */
-const mdLeaveAnimation = (baseEl, opts) => {
-  const { currentBreakpoint } = opts;
-  const root = getElementRoot(baseEl);
-  const { wrapperAnimation, backdropAnimation } = currentBreakpoint !== undefined ? createSheetLeaveAnimation(opts) : createLeaveAnimation();
-  backdropAnimation.addElement(root.querySelector('ion-backdrop'));
-  wrapperAnimation.addElement(root.querySelector('.modal-wrapper'));
-  return createAnimation()
+const mdLeaveAnimation = (baseEl) => {
+  const baseAnimation = createAnimation();
+  const backdropAnimation = createAnimation();
+  const wrapperAnimation = createAnimation();
+  const wrapperEl = baseEl.querySelector('.modal-wrapper');
+  backdropAnimation
+    .addElement(baseEl.querySelector('ion-backdrop'))
+    .fromTo('opacity', 'var(--backdrop-opacity)', 0.0);
+  wrapperAnimation
+    .addElement(wrapperEl)
+    .keyframes([
+    { offset: 0, opacity: 0.99, transform: 'translateY(0px)' },
+    { offset: 1, opacity: 0, transform: 'translateY(40px)' }
+  ]);
+  return baseAnimation
+    .addElement(baseEl)
     .easing('cubic-bezier(0.47,0,0.745,0.715)')
     .duration(200)
     .addAnimation([backdropAnimation, wrapperAnimation]);
 };
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
-const createSheetGesture = (baseEl, backdropEl, wrapperEl, initialBreakpoint, backdropBreakpoint, animation, breakpoints = [], onDismiss, onBreakpointChange) => {
-  // Defaults for the sheet swipe animation
-  const defaultBackdrop = [
-    { offset: 0, opacity: 'var(--backdrop-opacity)' },
-    { offset: 1, opacity: 0.01 }
-  ];
-  const customBackdrop = [
-    { offset: 0, opacity: 'var(--backdrop-opacity)' },
-    { offset: 1 - backdropBreakpoint, opacity: 0 },
-    { offset: 1, opacity: 0 }
-  ];
-  const SheetDefaults = {
-    WRAPPER_KEYFRAMES: [
-      { offset: 0, transform: 'translateY(0%)' },
-      { offset: 1, transform: 'translateY(100%)' }
-    ],
-    BACKDROP_KEYFRAMES: (backdropBreakpoint !== 0) ? customBackdrop : defaultBackdrop
-  };
-  const contentEl = baseEl.querySelector('ion-content');
-  const height = wrapperEl.clientHeight;
-  let currentBreakpoint = initialBreakpoint;
-  let offset = 0;
-  const wrapperAnimation = animation.childAnimations.find(ani => ani.id === 'wrapperAnimation');
-  const backdropAnimation = animation.childAnimations.find(ani => ani.id === 'backdropAnimation');
-  const maxBreakpoint = breakpoints[breakpoints.length - 1];
-  /**
-   * After the entering animation completes,
-   * we need to set the animation to go from
-   * offset 0 to offset 1 so that users can
-   * swipe in any direction. We then set the
-   * animation offset to the current breakpoint
-   * so there is no flickering.
-   */
-  if (wrapperAnimation && backdropAnimation) {
-    wrapperAnimation.keyframes([...SheetDefaults.WRAPPER_KEYFRAMES]);
-    backdropAnimation.keyframes([...SheetDefaults.BACKDROP_KEYFRAMES]);
-    animation.progressStart(true, 1 - currentBreakpoint);
-    /**
-     * Backdrop should become enabled
-     * after the backdropBreakpoint value
-     */
-    const backdropEnabled = currentBreakpoint > backdropBreakpoint;
-    backdropEl.style.setProperty('pointer-events', backdropEnabled ? 'auto' : 'none');
-  }
-  if (contentEl && currentBreakpoint !== maxBreakpoint) {
-    contentEl.scrollY = false;
-  }
-  const canStart = (detail) => {
-    /**
-     * If the sheet is fully expanded and
-     * the user is swiping on the content,
-     * the gesture should not start to
-     * allow for scrolling on the content.
-     */
-    const content = detail.event.target.closest('ion-content');
-    if (currentBreakpoint === 1 && content) {
-      return false;
-    }
-    return true;
-  };
-  const onStart = () => {
-    /**
-     * If swiping on the content
-     * we should disable scrolling otherwise
-     * the sheet will expand and the content will scroll.
-     */
-    if (contentEl) {
-      contentEl.scrollY = false;
-    }
-    animation.progressStart(true, 1 - currentBreakpoint);
-  };
-  const onMove = (detail) => {
-    /**
-     * Given the change in gesture position on the Y axis,
-     * compute where the offset of the animation should be
-     * relative to where the user dragged.
-     */
-    const initialStep = 1 - currentBreakpoint;
-    offset = clamp(0.0001, initialStep + (detail.deltaY / height), 0.9999);
-    animation.progressStep(offset);
-  };
-  const onEnd = (detail) => {
-    /**
-     * When the gesture releases, we need to determine
-     * the closest breakpoint to snap to.
-     */
-    const velocity = detail.velocityY;
-    const threshold = (detail.deltaY + velocity * 100) / height;
-    const diff = currentBreakpoint - threshold;
-    const closest = breakpoints.reduce((a, b) => {
-      return Math.abs(b - diff) < Math.abs(a - diff) ? b : a;
-    });
-    const shouldRemainOpen = closest !== 0;
-    currentBreakpoint = 0;
-    /**
-     * Update the animation so that it plays from
-     * the last offset to the closest snap point.
-     */
-    if (wrapperAnimation && backdropAnimation) {
-      wrapperAnimation.keyframes([
-        { offset: 0, transform: `translateY(${offset * 100}%)` },
-        { offset: 1, transform: `translateY(${(1 - closest) * 100}%)` }
-      ]);
-      backdropAnimation.keyframes([
-        { offset: 0, opacity: `calc(var(--backdrop-opacity) * ${getBackdropValueForSheet(1 - offset, backdropBreakpoint)})` },
-        { offset: 1, opacity: `calc(var(--backdrop-opacity) * ${getBackdropValueForSheet(closest, backdropBreakpoint)})` }
-      ]);
-      animation.progressStep(0);
-    }
-    /**
-     * Gesture should remain disabled until the
-     * snapping animation completes.
-     */
-    gesture.enable(false);
-    animation
-      .onFinish(() => {
-      if (shouldRemainOpen) {
-        /**
-         * Once the snapping animation completes,
-         * we need to reset the animation to go
-         * from 0 to 1 so users can swipe in any direction.
-         * We then set the animation offset to the current
-         * breakpoint so that it starts at the snapped position.
-         */
-        if (wrapperAnimation && backdropAnimation) {
-          raf(() => {
-            wrapperAnimation.keyframes([...SheetDefaults.WRAPPER_KEYFRAMES]);
-            backdropAnimation.keyframes([...SheetDefaults.BACKDROP_KEYFRAMES]);
-            animation.progressStart(true, 1 - closest);
-            currentBreakpoint = closest;
-            onBreakpointChange(currentBreakpoint);
-            /**
-             * If the sheet is fully expanded, we can safely
-             * enable scrolling again.
-             */
-            if (contentEl && currentBreakpoint === breakpoints[breakpoints.length - 1]) {
-              contentEl.scrollY = true;
-            }
-            /**
-             * Backdrop should become enabled
-             * after the backdropBreakpoint value
-             */
-            const backdropEnabled = currentBreakpoint > backdropBreakpoint;
-            backdropEl.style.setProperty('pointer-events', backdropEnabled ? 'auto' : 'none');
-            gesture.enable(true);
-          });
-        }
-        else {
-          gesture.enable(true);
-        }
-      }
-      /**
-       * This must be a one time callback
-       * otherwise a new callback will
-       * be added every time onEnd runs.
-       */
-    }, { oneTimeCallback: true })
-      .progressEnd(1, 0, 500);
-    if (!shouldRemainOpen) {
-      onDismiss();
-    }
-  };
-  const gesture = createGesture({
-    el: wrapperEl,
-    gestureName: 'modalSheet',
-    gesturePriority: 40,
-    direction: 'y',
-    threshold: 10,
-    canStart,
-    onStart,
-    onMove,
-    onEnd
-  });
-  return gesture;
-};
+const modalIosCss = ".sc-ion-modal-ios-h{--width:100%;--min-width:auto;--max-width:auto;--height:100%;--min-height:auto;--max-height:auto;--overflow:hidden;--border-radius:0;--border-width:0;--border-style:none;--border-color:transparent;--background:var(--ion-background-color, #fff);--box-shadow:none;--backdrop-opacity:0;left:0;right:0;top:0;bottom:0;display:flex;position:absolute;align-items:center;justify-content:center;outline:none;contain:strict}.overlay-hidden.sc-ion-modal-ios-h{display:none}.modal-wrapper.sc-ion-modal-ios,.modal-shadow.sc-ion-modal-ios{border-radius:var(--border-radius);width:var(--width);min-width:var(--min-width);max-width:var(--max-width);height:var(--height);min-height:var(--min-height);max-height:var(--max-height);border-width:var(--border-width);border-style:var(--border-style);border-color:var(--border-color);background:var(--background);box-shadow:var(--box-shadow);overflow:var(--overflow);z-index:10}.modal-shadow.sc-ion-modal-ios{position:absolute;background:transparent}@media only screen and (min-width: 768px) and (min-height: 600px){.sc-ion-modal-ios-h{--width:600px;--height:500px;--ion-safe-area-top:0px;--ion-safe-area-bottom:0px;--ion-safe-area-right:0px;--ion-safe-area-left:0px}}@media only screen and (min-width: 768px) and (min-height: 768px){.sc-ion-modal-ios-h{--width:600px;--height:600px}}.sc-ion-modal-ios-h:first-of-type{--backdrop-opacity:var(--ion-backdrop-opacity, 0.4)}@media only screen and (min-width: 768px) and (min-height: 600px){.sc-ion-modal-ios-h{--border-radius:10px}}.modal-wrapper.sc-ion-modal-ios{transform:translate3d(0,  100%,  0)}@media screen and (max-width: 767px){@supports (width: max(0px, 1px)){.modal-card.sc-ion-modal-ios-h{--height:calc(100% - max(30px, var(--ion-safe-area-top)) - 10px)}}@supports not (width: max(0px, 1px)){.modal-card.sc-ion-modal-ios-h{--height:calc(100% - 40px)}}.modal-card.sc-ion-modal-ios-h .modal-wrapper.sc-ion-modal-ios{border-top-left-radius:10px;border-top-right-radius:10px;border-bottom-right-radius:0;border-bottom-left-radius:0}[dir=rtl].sc-ion-modal-ios-h -no-combinator.modal-card.sc-ion-modal-ios-h .modal-wrapper.sc-ion-modal-ios,[dir=rtl] .sc-ion-modal-ios-h -no-combinator.modal-card.sc-ion-modal-ios-h .modal-wrapper.sc-ion-modal-ios,[dir=rtl].modal-card.sc-ion-modal-ios-h .modal-wrapper.sc-ion-modal-ios,[dir=rtl] .modal-card.sc-ion-modal-ios-h .modal-wrapper.sc-ion-modal-ios{border-top-left-radius:10px;border-top-right-radius:10px;border-bottom-right-radius:0;border-bottom-left-radius:0}.modal-card.sc-ion-modal-ios-h{--backdrop-opacity:0;--width:100%;align-items:flex-end}.modal-card.sc-ion-modal-ios-h .modal-shadow.sc-ion-modal-ios{display:none}.modal-card.sc-ion-modal-ios-h ion-backdrop.sc-ion-modal-ios{pointer-events:none}}@media screen and (min-width: 768px){.modal-card.sc-ion-modal-ios-h{--width:calc(100% - 120px);--height:calc(100% - (120px + var(--ion-safe-area-top) + var(--ion-safe-area-bottom)));--max-width:720px;--max-height:1000px}.modal-card.sc-ion-modal-ios-h{--backdrop-opacity:0;transition:all 0.5s ease-in-out}.modal-card.sc-ion-modal-ios-h:first-of-type{--backdrop-opacity:0.18}.modal-card.sc-ion-modal-ios-h .modal-shadow.sc-ion-modal-ios{box-shadow:0px 0px 30px 10px rgba(0, 0, 0, 0.1)}}";
 
-const modalIosCss = ":host{--width:100%;--min-width:auto;--max-width:auto;--height:100%;--min-height:auto;--max-height:auto;--overflow:hidden;--border-radius:0;--border-width:0;--border-style:none;--border-color:transparent;--background:var(--ion-background-color, #fff);--box-shadow:none;--backdrop-opacity:0;left:0;right:0;top:0;bottom:0;display:flex;position:absolute;align-items:center;justify-content:center;outline:none;contain:strict;pointer-events:none}:host(.modal-interactive) .modal-wrapper,:host(.modal-interactive) ion-backdrop{pointer-events:auto}:host(.overlay-hidden){display:none}.modal-wrapper,.modal-shadow{border-radius:var(--border-radius);width:var(--width);min-width:var(--min-width);max-width:var(--max-width);height:var(--height);min-height:var(--min-height);max-height:var(--max-height);border-width:var(--border-width);border-style:var(--border-style);border-color:var(--border-color);background:var(--background);box-shadow:var(--box-shadow);overflow:var(--overflow);z-index:10}.modal-shadow{position:absolute;background:transparent}@media only screen and (min-width: 768px) and (min-height: 600px){:host{--width:600px;--height:500px;--ion-safe-area-top:0px;--ion-safe-area-bottom:0px;--ion-safe-area-right:0px;--ion-safe-area-left:0px}}@media only screen and (min-width: 768px) and (min-height: 768px){:host{--width:600px;--height:600px}}.modal-handle{left:0px;right:0px;top:5px;border-radius:8px;margin-left:auto;margin-right:auto;position:absolute;width:36px;height:5px;transform:translateZ(0);background:var(--ion-color-step-350, #c0c0be);z-index:11}@supports (margin-inline-start: 0) or (-webkit-margin-start: 0){.modal-handle{margin-left:unset;margin-right:unset;-webkit-margin-start:auto;margin-inline-start:auto;-webkit-margin-end:auto;margin-inline-end:auto}}:host(.modal-sheet){--height:calc(100% - (var(--ion-safe-area-top) + 10px))}:host(.modal-sheet) .modal-wrapper,:host(.modal-sheet) .modal-shadow{position:absolute;bottom:0}:host(:first-of-type){--backdrop-opacity:var(--ion-backdrop-opacity, 0.4)}@media only screen and (min-width: 768px) and (min-height: 600px){:host{--border-radius:10px}}.modal-wrapper{transform:translate3d(0,  100%,  0)}@media screen and (max-width: 767px){@supports (width: max(0px, 1px)){:host(.modal-card){--height:calc(100% - max(30px, var(--ion-safe-area-top)) - 10px)}}@supports not (width: max(0px, 1px)){:host(.modal-card){--height:calc(100% - 40px)}}:host(.modal-card) .modal-wrapper{border-top-left-radius:10px;border-top-right-radius:10px;border-bottom-right-radius:0;border-bottom-left-radius:0}:host-context([dir=rtl]):host(.modal-card) .modal-wrapper,:host-context([dir=rtl]).modal-card .modal-wrapper{border-top-left-radius:10px;border-top-right-radius:10px;border-bottom-right-radius:0;border-bottom-left-radius:0}:host(.modal-card){--backdrop-opacity:0;--width:100%;align-items:flex-end}:host(.modal-card) .modal-shadow{display:none}:host(.modal-card) ion-backdrop{pointer-events:none}}@media screen and (min-width: 768px){:host(.modal-card){--width:calc(100% - 120px);--height:calc(100% - (120px + var(--ion-safe-area-top) + var(--ion-safe-area-bottom)));--max-width:720px;--max-height:1000px;--backdrop-opacity:0;--box-shadow:0px 0px 30px 10px rgba(0, 0, 0, 0.1);transition:all 0.5s ease-in-out}:host(.modal-card) .modal-shadow{box-shadow:var(--box-shadow)}}:host(.modal-sheet) .modal-wrapper{border-top-left-radius:10px;border-top-right-radius:10px;border-bottom-right-radius:0;border-bottom-left-radius:0}:host-context([dir=rtl]):host(.modal-sheet) .modal-wrapper,:host-context([dir=rtl]).modal-sheet .modal-wrapper{border-top-left-radius:10px;border-top-right-radius:10px;border-bottom-right-radius:0;border-bottom-left-radius:0}";
-
-const modalMdCss = ":host{--width:100%;--min-width:auto;--max-width:auto;--height:100%;--min-height:auto;--max-height:auto;--overflow:hidden;--border-radius:0;--border-width:0;--border-style:none;--border-color:transparent;--background:var(--ion-background-color, #fff);--box-shadow:none;--backdrop-opacity:0;left:0;right:0;top:0;bottom:0;display:flex;position:absolute;align-items:center;justify-content:center;outline:none;contain:strict;pointer-events:none}:host(.modal-interactive) .modal-wrapper,:host(.modal-interactive) ion-backdrop{pointer-events:auto}:host(.overlay-hidden){display:none}.modal-wrapper,.modal-shadow{border-radius:var(--border-radius);width:var(--width);min-width:var(--min-width);max-width:var(--max-width);height:var(--height);min-height:var(--min-height);max-height:var(--max-height);border-width:var(--border-width);border-style:var(--border-style);border-color:var(--border-color);background:var(--background);box-shadow:var(--box-shadow);overflow:var(--overflow);z-index:10}.modal-shadow{position:absolute;background:transparent}@media only screen and (min-width: 768px) and (min-height: 600px){:host{--width:600px;--height:500px;--ion-safe-area-top:0px;--ion-safe-area-bottom:0px;--ion-safe-area-right:0px;--ion-safe-area-left:0px}}@media only screen and (min-width: 768px) and (min-height: 768px){:host{--width:600px;--height:600px}}.modal-handle{left:0px;right:0px;top:5px;border-radius:8px;margin-left:auto;margin-right:auto;position:absolute;width:36px;height:5px;transform:translateZ(0);background:var(--ion-color-step-350, #c0c0be);z-index:11}@supports (margin-inline-start: 0) or (-webkit-margin-start: 0){.modal-handle{margin-left:unset;margin-right:unset;-webkit-margin-start:auto;margin-inline-start:auto;-webkit-margin-end:auto;margin-inline-end:auto}}:host(.modal-sheet){--height:calc(100% - (var(--ion-safe-area-top) + 10px))}:host(.modal-sheet) .modal-wrapper,:host(.modal-sheet) .modal-shadow{position:absolute;bottom:0}:host(:first-of-type){--backdrop-opacity:var(--ion-backdrop-opacity, 0.32)}@media only screen and (min-width: 768px) and (min-height: 600px){:host{--border-radius:2px}:host(:first-of-type){--box-shadow:0 28px 48px rgba(0, 0, 0, 0.4)}}.modal-wrapper{transform:translate3d(0,  40px,  0);opacity:0.01}";
+const modalMdCss = ".sc-ion-modal-md-h{--width:100%;--min-width:auto;--max-width:auto;--height:100%;--min-height:auto;--max-height:auto;--overflow:hidden;--border-radius:0;--border-width:0;--border-style:none;--border-color:transparent;--background:var(--ion-background-color, #fff);--box-shadow:none;--backdrop-opacity:0;left:0;right:0;top:0;bottom:0;display:flex;position:absolute;align-items:center;justify-content:center;outline:none;contain:strict}.overlay-hidden.sc-ion-modal-md-h{display:none}.modal-wrapper.sc-ion-modal-md,.modal-shadow.sc-ion-modal-md{border-radius:var(--border-radius);width:var(--width);min-width:var(--min-width);max-width:var(--max-width);height:var(--height);min-height:var(--min-height);max-height:var(--max-height);border-width:var(--border-width);border-style:var(--border-style);border-color:var(--border-color);background:var(--background);box-shadow:var(--box-shadow);overflow:var(--overflow);z-index:10}.modal-shadow.sc-ion-modal-md{position:absolute;background:transparent}@media only screen and (min-width: 768px) and (min-height: 600px){.sc-ion-modal-md-h{--width:600px;--height:500px;--ion-safe-area-top:0px;--ion-safe-area-bottom:0px;--ion-safe-area-right:0px;--ion-safe-area-left:0px}}@media only screen and (min-width: 768px) and (min-height: 768px){.sc-ion-modal-md-h{--width:600px;--height:600px}}.sc-ion-modal-md-h:first-of-type{--backdrop-opacity:var(--ion-backdrop-opacity, 0.32)}@media only screen and (min-width: 768px) and (min-height: 600px){.sc-ion-modal-md-h{--border-radius:2px}.sc-ion-modal-md-h:first-of-type{--box-shadow:0 28px 48px rgba(0, 0, 0, 0.4)}}.modal-wrapper.sc-ion-modal-md{transform:translate3d(0,  40px,  0);opacity:0.01}";
 
 let Modal = class {
   constructor(hostRef) {
@@ -634,14 +317,6 @@ let Modal = class {
     this.willPresent = createEvent(this, "ionModalWillPresent", 7);
     this.willDismiss = createEvent(this, "ionModalWillDismiss", 7);
     this.didDismiss = createEvent(this, "ionModalDidDismiss", 7);
-    this.didPresentShorthand = createEvent(this, "didPresent", 7);
-    this.willPresentShorthand = createEvent(this, "willPresent", 7);
-    this.willDismissShorthand = createEvent(this, "willDismiss", 7);
-    this.didDismissShorthand = createEvent(this, "didDismiss", 7);
-    this.modalIndex = modalIds++;
-    this.coreDelegate = CoreDelegate();
-    this.isSheetModal = false;
-    this.inline = false;
     // Whether or not modal is being dismissed via gesture
     this.gestureAnimationDismissing = false;
     this.presented = false;
@@ -649,16 +324,6 @@ let Modal = class {
      * If `true`, the keyboard will be automatically dismissed when the overlay is presented.
      */
     this.keyboardClose = true;
-    /**
-     * A decimal value between 0 and 1 that indicates the
-     * point after which the backdrop will begin to fade in
-     * when using a sheet modal. Prior to this point, the
-     * backdrop will be hidden and the content underneath
-     * the sheet can be interacted with. This value is exclusive
-     * meaning the backdrop will become active after the value
-     * specified.
-     */
-    this.backdropBreakpoint = 0;
     /**
      * If `true`, the modal will be dismissed when the backdrop is clicked.
      */
@@ -675,34 +340,6 @@ let Modal = class {
      * If `true`, the modal can be swiped to dismiss. Only applies in iOS mode.
      */
     this.swipeToClose = false;
-    /**
-     * If `true`, the modal will open. If `false`, the modal will close.
-     * Use this if you need finer grained control over presentation, otherwise
-     * just use the modalController or the `trigger` property.
-     * Note: `isOpen` will not automatically be set back to `false` when
-     * the modal dismisses. You will need to do that in your code.
-     */
-    this.isOpen = false;
-    this.configureTriggerInteraction = () => {
-      const { trigger, el, destroyTriggerInteraction } = this;
-      if (destroyTriggerInteraction) {
-        destroyTriggerInteraction();
-      }
-      const triggerEl = (trigger !== undefined) ? document.getElementById(trigger) : null;
-      if (!triggerEl) {
-        return;
-      }
-      const configureTriggerInteraction = (triggerEl, modalEl) => {
-        const openModal = () => {
-          modalEl.present();
-        };
-        triggerEl.addEventListener('click', openModal);
-        return () => {
-          triggerEl.removeEventListener('click', openModal);
-        };
-      };
-      this.destroyTriggerInteraction = configureTriggerInteraction(triggerEl, el);
-    };
     this.onBackdropTap = () => {
       this.dismiss(undefined, BACKDROP);
     };
@@ -724,17 +361,6 @@ let Modal = class {
       }
     };
   }
-  onIsOpenChange(newValue, oldValue) {
-    if (newValue === true && oldValue === false) {
-      this.present();
-    }
-    else if (newValue === false && oldValue === true) {
-      this.dismiss();
-    }
-  }
-  onTriggerChange() {
-    this.configureTriggerInteraction();
-  }
   swipeToCloseChanged(enable) {
     if (this.gesture) {
       this.gesture.enable(enable);
@@ -746,58 +372,6 @@ let Modal = class {
   connectedCallback() {
     prepareOverlay(this.el);
   }
-  componentWillLoad() {
-    const { breakpoints, initialBreakpoint } = this;
-    /**
-     * If user has custom ID set then we should
-     * not assign the default incrementing ID.
-     */
-    this.modalId = (this.el.hasAttribute('id')) ? this.el.getAttribute('id') : `ion-modal-${this.modalIndex}`;
-    this.isSheetModal = breakpoints !== undefined && initialBreakpoint !== undefined;
-    if (breakpoints !== undefined && initialBreakpoint !== undefined && !breakpoints.includes(initialBreakpoint)) {
-      console.warn('[Ionic Warning]: Your breakpoints array must include the initialBreakpoint value.');
-    }
-  }
-  componentDidLoad() {
-    /**
-     * If modal was rendered with isOpen="true"
-     * then we should open modal immediately.
-     */
-    if (this.isOpen === true) {
-      raf(() => this.present());
-    }
-    this.configureTriggerInteraction();
-  }
-  /**
-   * Determines whether or not an overlay
-   * is being used inline or via a controller/JS
-   * and returns the correct delegate.
-   * By default, subsequent calls to getDelegate
-   * will use a cached version of the delegate.
-   * This is useful for calling dismiss after
-   * present so that the correct delegate is given.
-   */
-  getDelegate(force = false) {
-    if (this.workingDelegate && !force) {
-      return {
-        delegate: this.workingDelegate,
-        inline: this.inline
-      };
-    }
-    /**
-     * If using overlay inline
-     * we potentially need to use the coreDelegate
-     * so that this works in vanilla JS apps.
-     * If a user has already placed the overlay
-     * as a direct descendant of ion-app or
-     * the body, then we can assume that
-     * the overlay is already in the correct place.
-     */
-    const parentEl = this.el.parentNode;
-    const inline = this.inline = parentEl !== null && parentEl.tagName !== 'ION-APP' && parentEl.tagName !== 'BODY';
-    const delegate = this.workingDelegate = (inline) ? this.delegate || this.coreDelegate : this.delegate;
-    return { inline, delegate };
-  }
   /**
    * Present the modal overlay after it has been created.
    */
@@ -805,31 +379,18 @@ let Modal = class {
     if (this.presented) {
       return;
     }
-    /**
-     * When using an inline modal
-     * and dismissing a modal it is possible to
-     * quickly present the modal while it is
-     * dismissing. We need to await any current
-     * transition to allow the dismiss to finish
-     * before presenting again.
-     */
-    if (this.currentTransition !== undefined) {
-      await this.currentTransition;
+    const container = this.el.querySelector(`.modal-wrapper`);
+    if (!container) {
+      throw new Error('container is undefined');
     }
-    const data = Object.assign(Object.assign({}, this.componentProps), { modal: this.el });
-    const { inline, delegate } = this.getDelegate(true);
-    this.usersElement = await attachComponent(delegate, this.el, this.component, ['ion-page'], data, inline);
+    const componentProps = Object.assign(Object.assign({}, this.componentProps), { modal: this.el });
+    this.usersElement = await attachComponent(this.delegate, container, this.component, ['ion-page'], componentProps);
     await deepReady(this.usersElement);
     writeTask(() => this.el.classList.add('show-modal'));
-    this.currentTransition = present(this, 'modalEnter', iosEnterAnimation, mdEnterAnimation, { presentingEl: this.presentingElement, currentBreakpoint: this.initialBreakpoint, backdropBreakpoint: this.backdropBreakpoint });
-    await this.currentTransition;
-    if (this.isSheetModal) {
-      this.initSheetGesture();
-    }
-    else if (this.swipeToClose) {
+    await present(this, 'modalEnter', iosEnterAnimation, mdEnterAnimation, this.presentingElement);
+    if (this.swipeToClose) {
       this.initSwipeToClose();
     }
-    this.currentTransition = undefined;
   }
   initSwipeToClose() {
     if (getIonMode(this) !== 'ios') {
@@ -839,7 +400,7 @@ let Modal = class {
     // should be in the DOM and referenced by now, except
     // for the presenting el
     const animationBuilder = this.leaveAnimation || config.get('modalLeave', iosLeaveAnimation);
-    const ani = this.animation = animationBuilder(this.el, { presentingEl: this.presentingElement });
+    const ani = this.animation = animationBuilder(this.el, this.presentingElement);
     this.gesture = createSwipeToCloseGesture(this.el, ani, () => {
       /**
        * While the gesture animation is finishing
@@ -859,37 +420,6 @@ let Modal = class {
     });
     this.gesture.enable(true);
   }
-  initSheetGesture() {
-    var _a;
-    const { wrapperEl, initialBreakpoint, backdropBreakpoint } = this;
-    if (!wrapperEl || initialBreakpoint === undefined) {
-      return;
-    }
-    const animationBuilder = this.enterAnimation || config.get('modalEnter', iosEnterAnimation);
-    const ani = this.animation = animationBuilder(this.el, { presentingEl: this.presentingElement, currentBreakpoint: initialBreakpoint, backdropBreakpoint });
-    ani.progressStart(true, 1);
-    const sortedBreakpoints = ((_a = this.breakpoints) === null || _a === void 0 ? void 0 : _a.sort((a, b) => a - b)) || [];
-    this.gesture = createSheetGesture(this.el, this.backdropEl, wrapperEl, initialBreakpoint, backdropBreakpoint, ani, sortedBreakpoints, () => {
-      /**
-       * While the gesture animation is finishing
-       * it is possible for a user to tap the backdrop.
-       * This would result in the dismiss animation
-       * being played again. Typically this is avoided
-       * by setting `presented = false` on the overlay
-       * component; however, we cannot do that here as
-       * that would prevent the element from being
-       * removed from the DOM.
-       */
-      this.gestureAnimationDismissing = true;
-      this.animation.onFinish(async () => {
-        await this.dismiss(undefined, 'gesture');
-        this.gestureAnimationDismissing = false;
-      });
-    }, (breakpoint) => {
-      this.currentBreakpoint = breakpoint;
-    });
-    this.gesture.enable(true);
-  }
   /**
    * Dismiss the modal overlay after it has been presented.
    *
@@ -900,32 +430,15 @@ let Modal = class {
     if (this.gestureAnimationDismissing && role !== 'gesture') {
       return false;
     }
-    /**
-     * When using an inline modal
-     * and presenting a modal it is possible to
-     * quickly dismiss the modal while it is
-     * presenting. We need to await any current
-     * transition to allow the present to finish
-     * before dismissing again.
-     */
-    if (this.currentTransition !== undefined) {
-      await this.currentTransition;
-    }
     const enteringAnimation = activeAnimations.get(this) || [];
-    this.currentTransition = dismiss(this, data, role, 'modalLeave', iosLeaveAnimation, mdLeaveAnimation, { presentingEl: this.presentingElement, currentBreakpoint: this.currentBreakpoint || this.initialBreakpoint, backdropBreakpoint: this.backdropBreakpoint });
-    const dismissed = await this.currentTransition;
+    const dismissed = await dismiss(this, data, role, 'modalLeave', iosLeaveAnimation, mdLeaveAnimation, this.presentingElement);
     if (dismissed) {
-      const { delegate } = this.getDelegate();
-      await detachComponent(delegate, this.usersElement);
+      await detachComponent(this.delegate, this.usersElement);
       if (this.animation) {
         this.animation.destroy();
       }
-      if (this.gesture) {
-        this.gesture.destroy();
-      }
       enteringAnimation.forEach(ani => ani.destroy());
     }
-    this.currentTransition = undefined;
     this.animation = undefined;
     return dismissed;
   }
@@ -942,18 +455,14 @@ let Modal = class {
     return eventMethod(this.el, 'ionModalWillDismiss');
   }
   render() {
-    const { handle, isSheetModal, presentingElement, htmlAttributes } = this;
-    const showHandle = handle !== false && isSheetModal;
+    const { htmlAttributes } = this;
     const mode = getIonMode(this);
-    const { presented, modalId } = this;
     return (h(Host, Object.assign({ "no-router": true, "aria-modal": "true", tabindex: "-1" }, htmlAttributes, { style: {
         zIndex: `${20000 + this.overlayIndex}`,
-      }, class: Object.assign({ [mode]: true, [`modal-card`]: presentingElement !== undefined && mode === 'ios', [`modal-sheet`]: isSheetModal, 'overlay-hidden': true, 'modal-interactive': presented }, getClassMap(this.cssClass)), id: modalId, onIonBackdropTap: this.onBackdropTap, onIonDismiss: this.onDismiss, onIonModalDidPresent: this.onLifecycle, onIonModalWillPresent: this.onLifecycle, onIonModalWillDismiss: this.onLifecycle, onIonModalDidDismiss: this.onLifecycle }), h("ion-backdrop", { ref: el => this.backdropEl = el, visible: this.showBackdrop, tappable: this.backdropDismiss, part: "backdrop" }), mode === 'ios' && h("div", { class: "modal-shadow" }), h("div", { role: "dialog", class: "modal-wrapper ion-overlay-wrapper", part: "content", ref: el => this.wrapperEl = el }, showHandle && h("div", { class: "modal-handle", part: "handle" }), h("slot", null))));
+      }, class: Object.assign({ [mode]: true, [`modal-card`]: this.presentingElement !== undefined && mode === 'ios' }, getClassMap(this.cssClass)), onIonBackdropTap: this.onBackdropTap, onIonDismiss: this.onDismiss, onIonModalDidPresent: this.onLifecycle, onIonModalWillPresent: this.onLifecycle, onIonModalWillDismiss: this.onLifecycle, onIonModalDidDismiss: this.onLifecycle }), h("ion-backdrop", { visible: this.showBackdrop, tappable: this.backdropDismiss }), mode === 'ios' && h("div", { class: "modal-shadow" }), h("div", { tabindex: "0" }), h("div", { role: "dialog", class: "modal-wrapper ion-overlay-wrapper" }), h("div", { tabindex: "0" })));
   }
   get el() { return getElement(this); }
   static get watchers() { return {
-    "isOpen": ["onIsOpenChange"],
-    "trigger": ["onTriggerChange"],
     "swipeToClose": ["swipeToCloseChanged"]
   }; }
 };
@@ -963,7 +472,6 @@ const LIFECYCLE_MAP = {
   'ionModalWillDismiss': 'ionViewWillLeave',
   'ionModalDidDismiss': 'ionViewDidLeave',
 };
-let modalIds = 0;
 Modal.style = {
   ios: modalIosCss,
   md: modalMdCss

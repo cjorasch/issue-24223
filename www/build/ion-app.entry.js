@@ -1,5 +1,5 @@
-import { r as registerInstance, o as Build, h, i as Host, j as getElement } from './index-68fca061.js';
-import { a as isPlatform, c as config, g as getIonMode } from './ionic-global-686539a0.js';
+import { r as registerInstance, n as Build, i as h, j as Host, k as getElement } from './index-22aea243.js';
+import { a as isPlatform, c as config, g as getIonMode } from './ionic-global-2f4a12b1.js';
 
 const appCss = "html.plt-mobile ion-app{user-select:none}html.plt-mobile ion-app [contenteditable]{user-select:text}ion-app.force-statusbar-padding{--ion-safe-area-top:20px}";
 
@@ -12,15 +12,15 @@ let App = class {
       rIC(async () => {
         const isHybrid = isPlatform(window, 'hybrid');
         if (!config.getBoolean('_testing')) {
-          import('./tap-click-5a4896a4.js').then(module => module.startTapClick(config));
+          import('./tap-click-00f15f40.js').then(module => module.startTapClick(config));
         }
         if (config.getBoolean('statusTap', isHybrid)) {
-          import('./status-tap-880a5219.js').then(module => module.startStatusTap());
+          import('./status-tap-ea04be8b.js').then(module => module.startStatusTap());
         }
         if (config.getBoolean('inputShims', needInputShims())) {
-          import('./input-shims-b6a351a9.js').then(module => module.startInputShims(config));
+          import('./input-shims-5f1de1ff.js').then(module => module.startInputShims(config));
         }
-        const hardwareBackButtonModule = await import('./hardware-back-button-b6ccf74a.js');
+        const hardwareBackButtonModule = await import('./hardware-back-button-508e48cf.js');
         if (config.getBoolean('hardwareBackButton', isHybrid)) {
           hardwareBackButtonModule.startHardwareBackButton();
         }
@@ -28,25 +28,10 @@ let App = class {
           hardwareBackButtonModule.blockHardwareBackButton();
         }
         if (typeof window !== 'undefined') {
-          import('./keyboard-2503e874.js').then(module => module.startKeyboardAssist(window));
+          import('./keyboard-06906eac.js').then(module => module.startKeyboardAssist(window));
         }
-        import('./focus-visible-40cda868.js').then(module => this.focusVisible = module.startFocusVisible());
+        import('./focus-visible-abf04ce3.js').then(module => module.startFocusVisible());
       });
-    }
-  }
-  /**
-   * @internal
-   * Used to set focus on an element that uses `ion-focusable`.
-   * Do not use this if focusing the element as a result of a keyboard
-   * event as the focus utility should handle this for us. This method
-   * should be used when we want to programmatically focus an element as
-   * a result of another user action. (Ex: We focus the first element
-   * inside of a popover when the user presents it, but the popover is not always
-   * presented as a result of keyboard action.)
-   */
-  async setFocus(elements) {
-    if (this.focusVisible) {
-      this.focusVisible.setFocus(elements);
     }
   }
   render() {

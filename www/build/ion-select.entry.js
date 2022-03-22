@@ -1,13 +1,10 @@
-import { r as registerInstance, k as createEvent, h, i as Host, j as getElement } from './index-68fca061.js';
-import { g as getIonMode } from './ionic-global-686539a0.js';
-import { f as focusElement, j as findItemLabel, m as getAriaLabel, d as renderHiddenInput } from './helpers-282dc853.js';
-import { c as popoverController, f as actionSheetController, g as alertController } from './overlays-842c2821.js';
-import { h as hostContext } from './theme-c336c9d9.js';
-import './hardware-back-button-b6ccf74a.js';
+import { r as registerInstance, f as createEvent, i as h, j as Host, k as getElement } from './index-22aea243.js';
+import { g as getIonMode } from './ionic-global-2f4a12b1.js';
+import { h as findItemLabel, d as getAriaLabel, e as renderHiddenInput } from './helpers-d3df6ac7.js';
+import { f as popoverController, g as actionSheetController, h as alertController } from './overlays-3dcf8c67.js';
+import { h as hostContext } from './theme-12606872.js';
+import './hardware-back-button-508e48cf.js';
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
 const watchForOptions = (containerEl, tagName, onChange) => {
   /* tslint:disable-next-line */
   if (typeof MutationObserver === 'undefined') {
@@ -42,9 +39,9 @@ const findCheckedOption = (el, tagName) => {
   return options.find((o) => o.value === el.value);
 };
 
-const selectIosCss = ":host{--placeholder-color:currentColor;--placeholder-opacity:0.33;padding-left:var(--padding-start);padding-right:var(--padding-end);padding-top:var(--padding-top);padding-bottom:var(--padding-bottom);display:flex;position:relative;align-items:center;font-family:var(--ion-font-family, inherit);overflow:hidden;z-index:2}@supports (margin-inline-start: 0) or (-webkit-margin-start: 0){:host{padding-left:unset;padding-right:unset;-webkit-padding-start:var(--padding-start);padding-inline-start:var(--padding-start);-webkit-padding-end:var(--padding-end);padding-inline-end:var(--padding-end)}}:host(.in-item){position:static;max-width:45%}:host(.select-disabled){opacity:0.4;pointer-events:none}:host(.ion-focused) button{border:2px solid #5e9ed6}.select-placeholder{color:var(--placeholder-color);opacity:var(--placeholder-opacity)}label{left:0;top:0;margin-left:0;margin-right:0;margin-top:0;margin-bottom:0;position:absolute;width:100%;height:100%;border:0;background:transparent;cursor:pointer;appearance:none;outline:none;display:flex;align-items:center;opacity:0}[dir=rtl] label,:host-context([dir=rtl]) label{left:unset;right:unset;right:0}label::-moz-focus-inner{border:0}button{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;margin:0;padding:0;border:0;outline:0;clip:rect(0 0 0 0);opacity:0;overflow:hidden;-webkit-appearance:none;-moz-appearance:none}.select-icon{position:relative}.select-text{flex:1;min-width:16px;font-size:inherit;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.select-icon-inner{left:5px;top:50%;margin-top:-2px;position:absolute;width:0;height:0;border-top:5px solid;border-right:5px solid transparent;border-left:5px solid transparent;color:currentColor;pointer-events:none}[dir=rtl] .select-icon-inner,:host-context([dir=rtl]) .select-icon-inner{left:unset;right:unset;right:5px}:host{--padding-top:10px;--padding-end:10px;--padding-bottom:10px;--padding-start:20px}.select-icon{width:12px;height:18px;opacity:0.33}";
+const selectIosCss = ":host{--placeholder-color:currentColor;--placeholder-opacity:0.33;padding-left:var(--padding-start);padding-right:var(--padding-end);padding-top:var(--padding-top);padding-bottom:var(--padding-bottom);display:flex;position:relative;align-items:center;font-family:var(--ion-font-family, inherit);overflow:hidden;z-index:2}@supports (margin-inline-start: 0) or (-webkit-margin-start: 0){:host{padding-left:unset;padding-right:unset;-webkit-padding-start:var(--padding-start);padding-inline-start:var(--padding-start);-webkit-padding-end:var(--padding-end);padding-inline-end:var(--padding-end)}}:host(.in-item){position:static;max-width:45%}:host(.select-disabled){opacity:0.4;pointer-events:none}:host(.ion-focused) button{border:2px solid #5e9ed6}.select-placeholder{color:var(--placeholder-color);opacity:var(--placeholder-opacity)}label{left:0;top:0;margin-left:0;margin-right:0;margin-top:0;margin-bottom:0;position:absolute;width:100%;height:100%;border:0;background:transparent;cursor:pointer;appearance:none;outline:none;display:flex;align-items:center;opacity:0}[dir=rtl] label,:host-context([dir=rtl]) label{left:unset;right:unset;right:0}label::-moz-focus-inner{border:0}button{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;margin:0;padding:0;border:0;outline:0;clip:rect(0 0 0 0);opacity:0;overflow:hidden;-webkit-appearance:none;-moz-appearance:none}.select-icon{position:relative;opacity:0.33}.select-text{flex:1;min-width:16px;font-size:inherit;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.select-icon-inner{left:5px;top:50%;margin-top:-2px;position:absolute;width:0;height:0;border-top:5px solid;border-right:5px solid transparent;border-left:5px solid transparent;color:currentColor;pointer-events:none}[dir=rtl] .select-icon-inner,:host-context([dir=rtl]) .select-icon-inner{left:unset;right:unset;right:5px}:host{--padding-top:10px;--padding-end:10px;--padding-bottom:10px;--padding-start:20px}.select-icon{width:12px;height:18px}";
 
-const selectMdCss = ":host{--placeholder-color:currentColor;--placeholder-opacity:0.33;padding-left:var(--padding-start);padding-right:var(--padding-end);padding-top:var(--padding-top);padding-bottom:var(--padding-bottom);display:flex;position:relative;align-items:center;font-family:var(--ion-font-family, inherit);overflow:hidden;z-index:2}@supports (margin-inline-start: 0) or (-webkit-margin-start: 0){:host{padding-left:unset;padding-right:unset;-webkit-padding-start:var(--padding-start);padding-inline-start:var(--padding-start);-webkit-padding-end:var(--padding-end);padding-inline-end:var(--padding-end)}}:host(.in-item){position:static;max-width:45%}:host(.select-disabled){opacity:0.4;pointer-events:none}:host(.ion-focused) button{border:2px solid #5e9ed6}.select-placeholder{color:var(--placeholder-color);opacity:var(--placeholder-opacity)}label{left:0;top:0;margin-left:0;margin-right:0;margin-top:0;margin-bottom:0;position:absolute;width:100%;height:100%;border:0;background:transparent;cursor:pointer;appearance:none;outline:none;display:flex;align-items:center;opacity:0}[dir=rtl] label,:host-context([dir=rtl]) label{left:unset;right:unset;right:0}label::-moz-focus-inner{border:0}button{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;margin:0;padding:0;border:0;outline:0;clip:rect(0 0 0 0);opacity:0;overflow:hidden;-webkit-appearance:none;-moz-appearance:none}.select-icon{position:relative}.select-text{flex:1;min-width:16px;font-size:inherit;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.select-icon-inner{left:5px;top:50%;margin-top:-2px;position:absolute;width:0;height:0;border-top:5px solid;border-right:5px solid transparent;border-left:5px solid transparent;color:currentColor;pointer-events:none}[dir=rtl] .select-icon-inner,:host-context([dir=rtl]) .select-icon-inner{left:unset;right:unset;right:5px}:host{--padding-top:10px;--padding-end:0;--padding-bottom:10px;--padding-start:16px}.select-icon{width:19px;height:19px;transition:transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);opacity:0.55}:host-context(.item-label-stacked) .select-icon,:host-context(.item-label-floating:not(.item-fill-outline)) .select-icon,:host-context(.item-label-floating.item-fill-outline){transform:translate3d(0,  -9px,  0)}:host-context(.item-has-focus) .select-icon{transform:rotate(180deg)}:host-context(.item-has-focus.item-label-stacked) .select-icon,:host-context(.item-has-focus.item-label-floating:not(.item-fill-outline)) .select-icon{transform:translate3d(0,  -9px,  0) rotate(180deg)}:host-context(ion-item.ion-focused) .select-icon,:host-context(.item-has-focus) .select-icon{color:var(--highlight-color-focused);opacity:1}";
+const selectMdCss = ":host{--placeholder-color:currentColor;--placeholder-opacity:0.33;padding-left:var(--padding-start);padding-right:var(--padding-end);padding-top:var(--padding-top);padding-bottom:var(--padding-bottom);display:flex;position:relative;align-items:center;font-family:var(--ion-font-family, inherit);overflow:hidden;z-index:2}@supports (margin-inline-start: 0) or (-webkit-margin-start: 0){:host{padding-left:unset;padding-right:unset;-webkit-padding-start:var(--padding-start);padding-inline-start:var(--padding-start);-webkit-padding-end:var(--padding-end);padding-inline-end:var(--padding-end)}}:host(.in-item){position:static;max-width:45%}:host(.select-disabled){opacity:0.4;pointer-events:none}:host(.ion-focused) button{border:2px solid #5e9ed6}.select-placeholder{color:var(--placeholder-color);opacity:var(--placeholder-opacity)}label{left:0;top:0;margin-left:0;margin-right:0;margin-top:0;margin-bottom:0;position:absolute;width:100%;height:100%;border:0;background:transparent;cursor:pointer;appearance:none;outline:none;display:flex;align-items:center;opacity:0}[dir=rtl] label,:host-context([dir=rtl]) label{left:unset;right:unset;right:0}label::-moz-focus-inner{border:0}button{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;margin:0;padding:0;border:0;outline:0;clip:rect(0 0 0 0);opacity:0;overflow:hidden;-webkit-appearance:none;-moz-appearance:none}.select-icon{position:relative;opacity:0.33}.select-text{flex:1;min-width:16px;font-size:inherit;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.select-icon-inner{left:5px;top:50%;margin-top:-2px;position:absolute;width:0;height:0;border-top:5px solid;border-right:5px solid transparent;border-left:5px solid transparent;color:currentColor;pointer-events:none}[dir=rtl] .select-icon-inner,:host-context([dir=rtl]) .select-icon-inner{left:unset;right:unset;right:5px}:host{--padding-top:10px;--padding-end:0;--padding-bottom:10px;--padding-start:16px}.select-icon{width:19px;height:19px}:host-context(.item-label-floating) .select-icon{transform:translate3d(0,  -9px,  0)}";
 
 let Select = class {
   constructor(hostRef) {
@@ -102,7 +99,7 @@ let Select = class {
       this.ionBlur.emit();
     };
   }
-  styleChanged() {
+  disabledChanged() {
     this.emitStyle();
   }
   valueChanged() {
@@ -147,32 +144,23 @@ let Select = class {
       this.setFocus();
     });
     await overlay.present();
-    // focus selected option for popovers
-    if (this.interface === 'popover') {
-      let indexOfSelected = this.childOpts.map(o => o.value).indexOf(this.value);
-      indexOfSelected = indexOfSelected > -1 ? indexOfSelected : 0; // default to first option if nothing selected
-      const selectedEl = overlay.querySelector(`.select-interface-option:nth-child(${indexOfSelected + 1})`);
-      if (selectedEl) {
-        focusElement(selectedEl);
-      }
-    }
     return overlay;
   }
   createOverlay(ev) {
     let selectInterface = this.interface;
-    if (selectInterface === 'action-sheet' && this.multiple) {
+    if ((selectInterface === 'action-sheet' || selectInterface === 'popover') && this.multiple) {
       console.warn(`Select interface cannot be "${selectInterface}" with a multi-value select. Using the "alert" interface instead.`);
       selectInterface = 'alert';
     }
     if (selectInterface === 'popover' && !ev) {
-      console.warn(`Select interface cannot be a "${selectInterface}" without passing an event. Using the "alert" interface instead.`);
+      console.warn('Select interface cannot be a "popover" without passing an event. Using the "alert" interface instead.');
       selectInterface = 'alert';
-    }
-    if (selectInterface === 'action-sheet') {
-      return this.openActionSheet();
     }
     if (selectInterface === 'popover') {
       return this.openPopover(ev);
+    }
+    if (selectInterface === 'action-sheet') {
+      return this.openActionSheet();
     }
     return this.openAlert();
   }
@@ -253,11 +241,9 @@ let Select = class {
         value,
         checked: isOptionSelected(value, selectValue, this.compareWith),
         disabled: option.disabled,
-        handler: (selected) => {
-          this.value = selected;
-          if (!this.multiple) {
-            this.close();
-          }
+        handler: () => {
+          this.value = value;
+          this.close();
         }
       };
     });
@@ -266,28 +252,11 @@ let Select = class {
   async openPopover(ev) {
     const interfaceOptions = this.interfaceOptions;
     const mode = getIonMode(this);
-    const showBackdrop = mode === 'md' ? false : true;
-    const multiple = this.multiple;
     const value = this.value;
-    let event = ev;
-    let size = 'auto';
-    const item = this.el.closest('ion-item');
-    // If the select is inside of an item containing a floating
-    // or stacked label then the popover should take up the
-    // full width of the item when it presents
-    if (item && (item.classList.contains('item-label-floating') || item.classList.contains('item-label-stacked'))) {
-      event = Object.assign(Object.assign({}, ev), { detail: {
-          ionShadowTarget: item
-        } });
-      size = 'cover';
-    }
-    const popoverOpts = Object.assign(Object.assign({ mode,
-      event, alignment: 'center', size,
-      showBackdrop }, interfaceOptions), { component: 'ion-select-popover', cssClass: ['select-popover', interfaceOptions.cssClass], componentProps: {
+    const popoverOpts = Object.assign(Object.assign({ mode }, interfaceOptions), { component: 'ion-select-popover', cssClass: ['select-popover', interfaceOptions.cssClass], event: ev, componentProps: {
         header: interfaceOptions.header,
         subHeader: interfaceOptions.subHeader,
         message: interfaceOptions.message,
-        multiple,
         value,
         options: this.createPopoverOptions(this.childOpts, value)
       } });
@@ -357,12 +326,11 @@ let Select = class {
   emitStyle() {
     this.ionStyle.emit({
       'interactive': true,
-      'interactive-disabled': this.disabled,
       'select': true,
-      'select-disabled': this.disabled,
-      'has-placeholder': this.placeholder !== undefined,
+      'has-placeholder': this.placeholder != null,
       'has-value': this.hasValue(),
-      'has-focus': this.isExpanded,
+      'interactive-disabled': this.disabled,
+      'select-disabled': this.disabled
     });
   }
   render() {
@@ -373,7 +341,7 @@ let Select = class {
     const displayValue = this.getText();
     let addPlaceholderClass = false;
     let selectText = displayValue;
-    if (selectText === '' && placeholder !== undefined) {
+    if (selectText === '' && placeholder != null) {
       selectText = placeholder;
       addPlaceholderClass = true;
     }
@@ -398,9 +366,8 @@ let Select = class {
   }
   get el() { return getElement(this); }
   static get watchers() { return {
-    "disabled": ["styleChanged"],
-    "placeholder": ["styleChanged"],
-    "isExpanded": ["styleChanged"],
+    "disabled": ["disabledChanged"],
+    "placeholder": ["disabledChanged"],
     "value": ["valueChanged"]
   }; }
 };

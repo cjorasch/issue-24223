@@ -1,15 +1,12 @@
-import { r as registerInstance, k as createEvent, h, i as Host, j as getElement } from './index-68fca061.js';
-import { g as getIonMode, c as config } from './ionic-global-686539a0.js';
-import { B as BACKDROP, a as prepareOverlay, p as present, d as dismiss, e as eventMethod } from './overlays-842c2821.js';
-import { s as sanitizeDOMString } from './index-435af8e6.js';
-import { g as getClassMap } from './theme-c336c9d9.js';
-import { c as createAnimation } from './animation-67bd1981.js';
-import './hardware-back-button-b6ccf74a.js';
-import './helpers-282dc853.js';
+import { r as registerInstance, f as createEvent, i as h, j as Host, k as getElement } from './index-22aea243.js';
+import { g as getIonMode, c as config } from './ionic-global-2f4a12b1.js';
+import { B as BACKDROP, a as prepareOverlay, p as present, d as dismiss, e as eventMethod } from './overlays-3dcf8c67.js';
+import { s as sanitizeDOMString } from './index-cc97b114.js';
+import { g as getClassMap } from './theme-12606872.js';
+import { c as createAnimation } from './animation-024af6a2.js';
+import './hardware-back-button-508e48cf.js';
+import './helpers-d3df6ac7.js';
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
 /**
  * iOS Loading Enter Animation
  */
@@ -37,9 +34,6 @@ const iosEnterAnimation = (baseEl) => {
     .addAnimation([backdropAnimation, wrapperAnimation]);
 };
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
 /**
  * iOS Loading Leave Animation
  */
@@ -63,9 +57,6 @@ const iosLeaveAnimation = (baseEl) => {
     .addAnimation([backdropAnimation, wrapperAnimation]);
 };
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
 /**
  * Md Loading Enter Animation
  */
@@ -93,9 +84,6 @@ const mdEnterAnimation = (baseEl) => {
     .addAnimation([backdropAnimation, wrapperAnimation]);
 };
 
-/*!
- * (C) Ionic http://ionicframework.com - MIT License
- */
 /**
  * Md Loading Leave Animation
  */
